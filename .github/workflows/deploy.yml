@@ -46,10 +46,10 @@ jobs:
           # 目标路径（你的域名在 Spaceship 的 document root）
           target: "${{ secrets.SSH_TARGET }}"
           # 不清空目标目录（保留 .htaccess 等）
-          strip_components: 0
+          strip_components: 1
           # 是否删除目标里多余的文件
           # true = 完全替换（推荐：让站点始终是最新的 dist/ 内容）
-          remove: true
+          overwrite: true
 
       - name: Deployment summary
         if: success()
