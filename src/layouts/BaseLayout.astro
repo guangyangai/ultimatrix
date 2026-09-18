@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = site.meta.title,
+  description = site.meta.description,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#e8e8e1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="zh_CN" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+</head>
+<body>
+  <main>
+    <div class="site-toast" role="status" aria-live="polite">
+      <span aria-hidden="true">i</span>
+      <p></p>
+    </div>
+
+    <slot />
+  </main>
+
+  <script>
+    // Scroll reveal
+    var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      document.documentElement.classList.add('motion-ready');
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -9% 0px', threshold: 0.08 });
+      targets.forEach(function (el) { observer.observe(el); });
+    }
+
+    // Toast
+    var toast = document.querySelector('.site-toast');
+    var msg = toast ? toast.querySelector('p') : null;
+    var timer = null;
+    document.addEventListener('click', function (event) {
+      var target = event.target && event.target.closest
+        ? event.target.closest('[data-toast]')
+        : null;
+      if (!target) return;
+      event.preventDefault();
+      if (timer) clearTimeout(timer);
+      if (toast && msg) {
+        msg.textContent = target.getAttribute('data-toast') || '这项内容正在整理中。';
+        toast.classList.add('is-visible');
+        timer = setTimeout(function () {
+          toast.classList.remove('is-visible');
+        }, 2800);
+      }
+    });
+
+    // Smooth nav highlight
+    var sections = ['projects', 'studio', 'contact'];
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+    if ('IntersectionObserver' in window) {
+      var navObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var id = entry.target.id;
+          navLinks.forEach(function (a) {
+            if (a.getAttribute('href') === '#' + id) {
+              a.style.color = 'var(--accent)';
+            } else {
+              a.style.color = '';
+            }
+          });
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      sections.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) navObserver.observe(el);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+---
+// 合作入口 — 三卡 → 中央 Agent → 三倍现金流 桥接图
+---
+
+<svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bridgeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#f3b13a" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <!-- 3 input cards merging into 1 output -->
+        <g>
+          <!-- Card 1 -->
+          <g transform="translate(60, 50)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#4a5cff"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">01</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+          <!-- Card 2 -->
+          <g transform="translate(60, 120)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#7c5cff"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">02</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+          <!-- Card 3 -->
+          <g transform="translate(60, 190)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#00d4a8"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">03</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+
+          <!-- Flow lines -->
+          <g fill="none" stroke="#1a1d24" stroke-width="1.5" opacity="0.7">
+            <path d="M 180 80 C 240 80, 280 130, 330 130" stroke-dasharray="4 4"/>
+            <path d="M 180 150 L 330 150" stroke-dasharray="4 4"/>
+            <path d="M 180 220 C 240 220, 280 170, 330 170" stroke-dasharray="4 4"/>
+          </g>
+
+          <!-- Center pipeline node -->
+          <g transform="translate(330, 100)">
+            <rect width="100" height="100" rx="14" fill="#1a1d24"/>
+            <text x="50" y="32" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3" letter-spacing="1">UMX · AGENT</text>
+            <text x="50" y="54" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#ecece5">一套底层</text>
+            <g transform="translate(20, 64)">
+              <circle cx="6" cy="6" r="3" fill="#4a5cff"/>
+              <circle cx="20" cy="6" r="3" fill="#7c5cff"/>
+              <circle cx="34" cy="6" r="3" fill="#00d4a8"/>
+              <circle cx="48" cy="6" r="3" fill="#f3b13a"/>
+            </g>
+            <text x="50" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#a8aaa3">三条赛道</text>
+          </g>
+
+          <!-- Output -->
+          <g transform="translate(480, 100)">
+            <rect width="90" height="100" rx="14" fill="#f3b13a" stroke="#1a1d24" stroke-width="1"/>
+            <text x="45" y="34" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#0c0e12" letter-spacing="1">OUTPUT</text>
+            <text x="45" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#0c0e12">3×</text>
+            <text x="45" y="76" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#0c0e12">现金流</text>
+            <line x1="45" y1="86" x2="45" y2="92" stroke="#0c0e12" stroke-width="1"/>
+            <text x="45" y="96" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12">1 OPC</text>
+          </g>
+        </g>
+      </svg>

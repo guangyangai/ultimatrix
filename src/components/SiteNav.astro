@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+---
+
+<nav class="site-nav" aria-label="主导航">
+  <a class="name-pill" href="#top" aria-label="回到首页">
+    <span>{site.brand.zh}</span>
+    <span class="pill-divider" aria-hidden="true"></span>
+    <span>{site.brand.en} · {site.brand.tagline}</span>
+    <span class="pill-divider" aria-hidden="true"></span>
+    <span class="mono">{site.brand.version}</span>
+  </a>
+  <div class="nav-links">
+    <a href="#projects">业务</a>
+    <a href="#studio">工作室</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>

@@ -1,0 +1,40 @@
+---
+import { site, contact } from '../data/site';
+---
+
+<footer class="page-shell site-footer" id="contact">
+  <section class="contact-card" aria-labelledby="contact-title" data-reveal="true">
+    <div>
+      <p class="micro-copy">项目合作 / 媒体咨询 / 投资</p>
+      <h2 id="contact-title">正在寻找 AI 工作流<br/>或量化研究合作？</h2>
+      <p class="contact-context">不论是短剧量产、设计工具试用，还是 Agent 投研内测，可以从一个 30 分钟的需求对齐开始。</p>
+    </div>
+    <button class="button contact-button" type="button" data-toast={`邮箱：${contact.email} · 微信/电话：${contact.phone}`}>
+      联系我 <span aria-hidden="true" class="arrow">→</span>
+    </button>
+  </section>
+
+  <div class="footer-grid" data-reveal="true">
+    <section class="footer-card">
+      <p class="footer-title">快速导航</p>
+      <a href="#top">回到顶部 <span aria-hidden="true" class="arrow">→</span></a>
+      <a href="#projects">查看业务 <span aria-hidden="true" class="arrow">→</span></a>
+      <a href="#studio">了解工作室 <span aria-hidden="true" class="arrow">→</span></a>
+    </section>
+
+    <section class="footer-card">
+      <p class="footer-title">联系与资料</p>
+      <button class="footer-action" type="button" data-toast={`邮箱：${contact.email}`}><span>邮箱</span><b>点击查看</b></button>
+      <button class="footer-action" type="button" data-toast={`电话 / 微信：${contact.phone}`}><span>电话 / 微信</span><b>+86 · 180</b></button>
+      <button class="footer-action" type="button" data-toast={`LinkedIn: ${contact.linkedin}`}><span>LinkedIn</span><b>点击查看</b></button>
+      <button class="footer-action" type="button" data-toast={`GitHub: ${contact.github}`}><span>GitHub</span><b>点击查看</b></button>
+    </section>
+
+    <section class="footer-card footer-note">
+      <p class="footer-title">说明</p>
+      <p>本工作室处于 OPC 冷启动阶段，所有对外内容均为真实进度，案例与数据将在里程碑达成后逐步公开。</p>
+      <p class="art-credit">插图与图标均为原创矢量 / 极简几何示意。</p>
+      <span>© 2026 ULTIMATRIX AI STUDIO · OPC · SHENZHEN</span>
+    </section>
+  </div>
+</footer>

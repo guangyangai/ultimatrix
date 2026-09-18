@@ -1,0 +1,50 @@
+---
+// Hero 主推位的"实时曲线 + 策略浮标"插图
+---
+
+<svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="qLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4a5cff"/>
+      <stop offset="100%" stop-color="#00d4a8"/>
+    </linearGradient>
+    <linearGradient id="qFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a5cff" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#4a5cff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" fill="#0c0e12"/>
+  <g stroke="#1a1d24" stroke-width="0.5">
+    <line x1="0" y1="60" x2="600" y2="60"/>
+    <line x1="0" y1="120" x2="600" y2="120"/>
+    <line x1="0" y1="180" x2="600" y2="180"/>
+    <line x1="0" y1="240" x2="600" y2="240"/>
+    <line x1="0" y1="300" x2="600" y2="300"/>
+    <line x1="100" y1="0" x2="100" y2="360"/>
+    <line x1="200" y1="0" x2="200" y2="360"/>
+    <line x1="300" y1="0" x2="300" y2="360"/>
+    <line x1="400" y1="0" x2="400" y2="360"/>
+    <line x1="500" y1="0" x2="500" y2="360"/>
+  </g>
+  <path d="M 0 260 L 50 240 L 100 200 L 150 220 L 200 170 L 250 190 L 300 140 L 350 160 L 400 100 L 450 130 L 500 80 L 550 110 L 600 60 L 600 360 L 0 360 Z" fill="url(#qFill)"/>
+  <path d="M 0 260 L 50 240 L 100 200 L 150 220 L 200 170 L 250 190 L 300 140 L 350 160 L 400 100 L 450 130 L 500 80 L 550 110 L 600 60" fill="none" stroke="url(#qLine)" stroke-width="2.5"/>
+  <g fill="#00d4a8">
+    <circle cx="200" cy="170" r="3"/>
+    <circle cx="400" cy="100" r="3"/>
+    <circle cx="600" cy="60" r="3"/>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="9" fill="#a8aaa3">
+    <text x="20" y="30">UMX / QUANT · LIVE</text>
+    <text x="500" y="30" fill="#00d4a8">+47.2%</text>
+    <text x="20" y="340">00:00</text>
+    <text x="580" y="340" text-anchor="end">24h</text>
+  </g>
+  <g>
+    <rect x="20" y="50" width="92" height="22" rx="11" fill="rgba(74,92,255,0.18)" stroke="rgba(74,92,255,0.4)" stroke-width="0.5"/>
+    <text x="66" y="64" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#dfe3ff">STRATEGY · A1</text>
+    <rect x="118" y="50" width="92" height="22" rx="11" fill="rgba(0,212,168,0.16)" stroke="rgba(0,212,168,0.4)" stroke-width="0.5"/>
+    <text x="164" y="64" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a8e3d6">STRATEGY · B3</text>
+    <rect x="20" y="290" width="148" height="22" rx="11" fill="rgba(243,177,58,0.16)" stroke="rgba(243,177,58,0.4)" stroke-width="0.5"/>
+    <text x="94" y="304" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#f3d8a8">CRAWLING · 184 / 2h</text>
+  </g>
+</svg>

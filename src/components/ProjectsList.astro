@@ -1,0 +1,150 @@
+---
+import { tracks } from '../data/site';
+import DramaClapper from './illustrations/DramaClapper.astro';
+import DesignGrid from './illustrations/DesignGrid.astro';
+import QuantCandles from './illustrations/QuantCandles.astro';
+import BridgeFlow from './illustrations/BridgeFlow.astro';
+
+// 把 illustration 名称映射到实际组件
+const illustrationMap = {
+  DramaClapper,
+  DesignGrid,
+  QuantCandles,
+};
+
+const editorialData: Record<string, { headLabel: string; headRight: string; featureLabel: string; featureTitle: string; featureBody: string; footLeft: string; footRight: string; visualClass: string; imageAlt: string; stageClass: string }> = {
+    drama: {
+      headLabel: '01 / 极智短剧',
+      headRight: 'AI · DRAMA PIPELINE',
+      featureLabel: '当前流水线',
+      featureTitle: '4 步出片 · 24 分钟',
+      featureBody: '选题 → 剧本 → 分镜/数字人 → 剪辑/合规。一次配置，全平台复用。',
+      footLeft: 'UMX · DRAMA',
+      footRight: '单条成本 ≈ ¥120',
+      visualClass: 'solis-visual',
+      imageAlt: '极智短剧项目视觉',
+      stageClass: '',
+    },
+    design: {
+      headLabel: '02 / 极智设计',
+      headRight: 'WEB · SPACE · WEAR',
+      featureLabel: '三类入口',
+      featureTitle: '网页 · 装修 · 服装',
+      featureBody: '一键生成企业站、户型方案与服装设计稿，分钟级交付，商用授权清晰。',
+      footLeft: 'UMX · DESIGN',
+      footRight: '单次 ¥39 起 · 月度订阅 ¥199',
+      visualClass: 'paper-visual',
+      imageAlt: '极智设计项目视觉',
+      stageClass: '',
+    },
+    quant: {
+      headLabel: '03 / 极智投研',
+      headRight: 'AGENT · RESEARCH',
+      featureLabel: '实时数据流',
+      featureTitle: '187 策略 / 24h',
+      featureBody: '全网公开策略自动爬取 → NLP 拆解 → 多周期回测 → 实时 Dashboard 排名。',
+      footLeft: 'UMX · QUANT',
+      footRight: '实时排名 · 私有部署可选',
+      visualClass: 'transfer-visual',
+      imageAlt: '极智投研项目视觉',
+      stageClass: '',
+    },
+};
+---
+
+<section class="page-shell projects-section" id="projects" aria-labelledby="projects-title">
+  <div class="section-heading" data-reveal="true">
+    <span class="section-title" id="projects-title">三条赛道</span>
+    <p>内容 · 设计 · 投研 —— 共享一套 Agent 底层与算力调度。</p>
+  </div>
+
+  {tracks.map((track, idx) => {
+    const Illustration = illustrationMap[track.illustration as keyof typeof illustrationMap];
+    const data = editorialData[track.id];
+    const isReversed = track.id === 'design'; // 中间项目图片与文案互换
+    return (
+      <article class={`project-row ${isReversed ? 'project-palimpsest' : ''}`} id={`project-${track.id}`} data-reveal="true">
+        {isReversed ? (
+          <>
+            <div class={`project-visual editorial-visual ${data.visualClass}`} aria-label={data.imageAlt}>
+              <div class="editorial-head"><span>{data.headLabel}</span><span>{data.headRight}</span></div>
+              <div class="editorial-stage">
+                <div class="editorial-feature">
+                  <span>{data.featureLabel}</span>
+                  <strong>{data.featureTitle}</strong>
+                  <p>{data.featureBody}</p>
+                </div>
+                <div class="editorial-image">
+                  <Illustration />
+                </div>
+              </div>
+              <div class="editorial-foot"><span>{data.footLeft}</span><span>{data.footRight}</span></div>
+            </div>
+            <div class="project-info">
+              <div class="project-info-main">
+                <p class="project-index">{track.index} / {track.category} · {track.title}</p>
+                <h2>{track.title}</h2>
+                <p class="project-type">{track.pitch}</p>
+              </div>
+              <dl class="project-facts">
+                {track.facts.map((f) => (
+                  <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+                ))}
+              </dl>
+              <div class="project-footer">
+                <div class="project-meta"><span>{track.meta.left}</span><span>{track.meta.right}</span></div>
+                <button class="case-link" type="button" data-toast={`${track.title} 详情正在整理中，敬请期待。`}>查看项目 <span aria-hidden="true" class="arrow">→</span></button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div class="project-info">
+              <div class="project-info-main">
+                <p class="project-index">{track.index} / {track.category} · {track.title}</p>
+                <h2>{track.title}</h2>
+                <p class="project-type">{track.pitch}</p>
+              </div>
+              <dl class="project-facts">
+                {track.facts.map((f) => (
+                  <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+                ))}
+              </dl>
+              <div class="project-footer">
+                <div class="project-meta"><span>{track.meta.left}</span><span>{track.meta.right}</span></div>
+                <button class="case-link" type="button" data-toast={`${track.title} 详情正在整理中，敬请期待。`}>查看项目 <span aria-hidden="true" class="arrow">→</span></button>
+              </div>
+            </div>
+            <div class={`project-visual editorial-visual ${data.visualClass}`} aria-label={data.imageAlt}>
+              <div class="editorial-head"><span>{data.headLabel}</span><span>{data.headRight}</span></div>
+              <div class="editorial-stage">
+                <div class="editorial-image">
+                  <Illustration />
+                </div>
+                <div class="editorial-feature">
+                  <span>{data.featureLabel}</span>
+                  <strong>{data.featureTitle}</strong>
+                  <p>{data.featureBody}</p>
+                </div>
+              </div>
+              <div class="editorial-foot"><span>{data.footLeft}</span><span>{data.footRight}</span></div>
+            </div>
+          </>
+        )}
+      </article>
+    );
+  })}
+
+  <!-- 合作入口卡 -->
+  <a class="all-work-card" href="#contact" data-reveal="true">
+    <div class="work-bridge-copy">
+      <span>合作入口 / 01—03</span>
+      <strong>把你的复杂需求，<br/>交给一套 AI Agent。 <span aria-hidden="true" class="arrow">→</span></strong>
+      <p>不论是短剧量产、设计交付，还是量化研究，都可以从一个 30 分钟的需求对齐开始。</p>
+    </div>
+    <div class="work-bridge-art">
+      <BridgeFlow />
+      <span>1 PERSON · 3 STREAMS</span>
+    </div>
+  </a>
+</section>

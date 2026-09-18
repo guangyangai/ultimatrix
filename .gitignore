@@ -1,0 +1,31 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/
+.idea/
+
+# source materials — DO NOT upload these to public web hosting
+Resume_updated_2026.pdf
+极智矩阵_AI_OPC_商业计划书（可直接Pitch投资人）.docx
+极智矩阵_AI_OPC_商业计划书.pptx
+*.pdf
+*.docx
+*.pptx

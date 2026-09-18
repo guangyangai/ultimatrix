@@ -1,0 +1,2302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>极智矩阵 · Ultimatrix AI Studio — 一人 AI 工作室</title>
+<meta name="description" content="极智矩阵（Ultimatrix）是杨光创立的 AI OPC 一人工作室。用一套 Agent 底层同时驱动 AI 短剧生成、AI 智能设计与 Agent 量化投研三条赛道。" />
+<!-- 字体使用系统栈：-apple-system / Segoe UI / ui-monospace，无外链依赖 -->
+<style>
+:root {
+  --paper: #e8e8e1;
+  --paper-strong: #e6e7df;
+  --paper-soft: #f0f0e9;
+  --ink: #0c0e12;
+  --ink-soft: #1a1d24;
+  --muted: #5b6168;
+  --line: rgba(12, 14, 18, 0.18);
+  --line-soft: rgba(12, 14, 18, 0.1);
+  --accent: #4a5cff;
+  --accent-deep: #2a3cc7;
+  --accent-soft: #dfe3ff;
+  --signal: #00d4a8;
+  --warm: #f3b13a;
+  --violet: #7c5cff;
+  --dark: #06080a;
+  --dark-soft: #0c0e11;
+  --dark-line: rgba(232, 232, 225, 0.2);
+  --dark-muted: #a8aaa3;
+  --dark-paper: #ecece5;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { color: inherit; font: inherit; border: 0; background: transparent; }
+
+button, a { -webkit-tap-highlight-color: transparent; }
+
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--ink); color: var(--paper); }
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+  padding: 12px 2.3vw;
+  border-bottom: 1px solid var(--line);
+  background: rgba(232, 232, 225, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.name-pill, .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.name-pill {
+  gap: 9px;
+  padding: 0 13px;
+  font-weight: 500;
+}
+
+.name-pill .mono {
+  font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.pill-divider { width: 1px; height: 14px; background: var(--line); }
+
+.nav-links { display: flex; align-items: center; gap: 7px; }
+.nav-links a { padding: 0 15px; }
+.name-pill:hover, .nav-links a:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.page-shell { width: min(100%, 1600px); margin: 0 auto; padding-left: 2.3vw; padding-right: 2.3vw; }
+
+.intro-shell { padding-top: 19px; padding-bottom: 34px; }
+
+.section-kicker, .card-label, .project-meta, .micro-copy, .project-index, .visual-caption, .footer-title {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mono-label {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.section-kicker {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1px 12px;
+  color: var(--muted);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(6, 93px);
+  gap: 16px;
+}
+
+.hero-card, .project-info, .project-visual, .capability-card, .about-copy-card, .about-graphic-card, .contact-card, .footer-card, .all-work-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 9px 24px rgba(12,14,18,.045);
+  animation: hero-enter 640ms var(--ease-out) both;
+  transition: border-color 220ms ease, background-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.hero-card:nth-child(2) { animation-delay: 45ms; }
+.hero-card:nth-child(3) { animation-delay: 90ms; }
+.hero-card:nth-child(4) { animation-delay: 135ms; }
+.hero-card:nth-child(5) { animation-delay: 180ms; }
+.hero-card:nth-child(6) { animation-delay: 225ms; }
+.hero-card:nth-child(7) { animation-delay: 270ms; }
+.hero-card:hover { border-color: rgba(12,14,18,.42); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 13px 30px rgba(12,14,18,.075); }
+
+.card-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 37px;
+  padding: 0 13px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,.26);
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+}
+
+/* Identity card */
+.identity-card {
+  --identity-scene-height: clamp(188px, 13.8vw, 208px);
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 4;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(124, 92, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(0, 212, 168, 0.18), transparent 55%),
+    #ffffff;
+}
+
+.identity-card::before {
+  position: absolute;
+  top: 37px;
+  right: 0;
+  left: 0;
+  height: calc(26px + var(--identity-scene-height));
+  border-bottom: 1px solid var(--line);
+  background-image:
+    linear-gradient(rgba(12,14,18,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12,14,18,0.05) 1px, transparent 1px),
+    linear-gradient(135deg, #d4e1ff 0%, #c8d4ff 50%, #b9b3f3 100%);
+  background-size: 13px 13px, 13px 13px, 100% 100%;
+  content: "";
+}
+
+.identity-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 22px;
+  padding: 17px 18px 15px;
+}
+
+.micro-copy { color: var(--muted); }
+.identity-copy { display: grid; min-width: 0; gap: 8px; }
+.identity-copy .micro-copy { margin: 0; }
+
+.identity-card h1 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(21px, 6.8cqi, 32px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: .96;
+  white-space: nowrap;
+}
+
+.identity-footnote {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 12px 18px 18px;
+  border-top: 1px solid var(--line);
+  background: #ffffff;
+  font-size: 13px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.identity-footnote .arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+/* Matrix scene */
+.identity-scene {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: var(--identity-scene-height);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(12,14,18,.26);
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(12,14,18,.12);
+  animation: monogram-enter 720ms 170ms var(--ease-out) both;
+}
+
+.identity-scene svg { width: 100%; height: 100%; display: block; transition: transform 420ms var(--ease-out); }
+.identity-card:hover .identity-scene svg { transform: scale(1.025); }
+
+.identity-stamp {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  display: grid;
+  min-width: 49px;
+  height: 25px;
+  place-items: center;
+  padding: 0 7px;
+  border: 1px solid rgba(12,14,18,.45);
+  border-radius: 999px;
+  background: rgba(243, 177, 58, 0.95);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .05em;
+}
+
+/* Intro card */
+.intro-card {
+  grid-column: 5 / span 4;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  background: #fbfaf3;
+}
+
+.live-dot { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); letter-spacing: .03em; text-transform: none; }
+.live-dot i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 4px rgba(0, 212, 168, 0.18);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(0, 212, 168, 0.18); }
+  50% { box-shadow: 0 0 0 7px rgba(0, 212, 168, 0); }
+}
+
+.intro-card-content {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 14px;
+  padding: 13px 14px;
+}
+
+.intro-card-content > p {
+  grid-column: 1 / -1;
+  max-width: 560px;
+  margin: 0;
+  font-size: clamp(14px, 1.25vw, 17px);
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+}
+
+.intro-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+}
+
+.intro-meta div { min-width: 0; }
+.intro-meta dt, .intro-meta dd { margin: 0; font-size: 9px; line-height: 1.25; }
+.intro-meta dt { color: var(--muted); letter-spacing: .05em; }
+.intro-meta dd { margin-top: 4px; font-size: 10px; font-weight: 500; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 40px;
+  padding: 0 15px;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform 220ms var(--ease-out), background-color 180ms ease, color 180ms ease;
+}
+
+.primary-button { align-self: end; margin-top: 0; background: var(--ink); color: var(--paper); }
+.button:hover, .square-action:hover { transform: translateY(-2px); }
+.primary-button:hover { background: var(--accent); border-color: var(--accent); }
+
+.arrow { display: inline-block; font-size: 15px; line-height: .8; transition: transform 220ms var(--ease-out); }
+.case-link .arrow, .footer-card a .arrow { margin-left: auto; }
+a:hover .arrow, .button:hover .arrow { transform: translate(2px, -2px); }
+
+/* Signal card */
+.signal-card {
+  grid-column: 9 / span 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--accent);
+  border-color: var(--accent-deep);
+  color: #f5f5f2;
+}
+
+.signal-card .card-label { border-color: rgba(255,255,255,.36); color: #eef0ff; }
+
+.field-note-body { display: flex; flex: 1; flex-direction: column; justify-content: space-between; padding: 13px 14px 11px; }
+
+.field-note-body strong {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -.07em;
+  line-height: 1;
+  font-feature-settings: 'tnum';
+}
+
+.field-note-body p { margin: 0; padding: 0; font-size: 13px; line-height: 1.3; letter-spacing: -.03em; }
+
+.text-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px 12px;
+  border-top: 1px solid rgba(255,255,255,.36);
+  font-size: 12px;
+  transition: background-color 180ms ease;
+}
+.text-action:hover { background: rgba(255,255,255,.08); }
+.inverted { color: #f4f4ef; }
+
+/* Resume card */
+.resume-card {
+  grid-column: 11 / span 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.resume-card .card-label { color: rgba(235,234,228,.69); border-color: rgba(235,234,228,.27); }
+.resume-word {
+  padding: 9px 12px 1px;
+  font-size: clamp(28px, 2.8vw, 42px);
+  font-weight: 500;
+  line-height: .9;
+  letter-spacing: -0.09em;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.resume-meta { display: grid; gap: 3px; margin: 0 12px 7px; }
+.resume-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(235,234,228,.22);
+}
+.resume-meta dt, .resume-meta dd { margin: 0; font-size: 8px; line-height: 1.2; }
+.resume-meta dt { color: rgba(235,234,228,.55); }
+.resume-meta dd { text-align: right; }
+
+.quiet-button {
+  min-height: 34px;
+  margin: auto 10px 10px;
+  font-size: 10px;
+  color: rgba(235,234,228,.8);
+  border-color: rgba(235,234,228,.4);
+}
+.quiet-button:hover { background: rgba(235,234,228,.08); color: var(--paper); }
+
+/* Skills card */
+.skills-card {
+  grid-column: 1 / span 4;
+  grid-row: 5 / span 2;
+  background: #f4f3ed;
+}
+
+.skill-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 7px 13px 10px; }
+
+.skill-list div {
+  min-width: 0;
+  padding: 7px 8px 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-list div:nth-child(even) { padding-left: 10px; border-left: 1px solid var(--line); }
+
+.skill-list span, .skill-list strong { display: block; }
+.skill-list span { color: var(--muted); font-size: 9px; letter-spacing: .04em; }
+.skill-list strong { margin-top: 4px; font-size: 11px; font-weight: 500; line-height: 1.25; }
+
+/* Hero project card */
+.hero-project-card {
+  grid-column: 5 / span 6;
+  grid-row: 3 / span 4;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf7;
+}
+
+.hero-product-preview {
+  position: relative;
+  flex: 1;
+  margin: 11px;
+  overflow: hidden;
+  border: 1px solid rgba(24,32,43,.28);
+  border-radius: 9px;
+  background: linear-gradient(135deg, #1a1d24 0%, #0c0e12 100%);
+}
+
+.hero-product-preview svg { width: 100%; height: 100%; display: block; }
+
+.hero-project-card:hover .hero-product-preview svg { transform: scale(1.012); }
+
+.hero-preview-note {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  width: 39%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px;
+  border-left: 1px solid rgba(240,238,229,.18);
+  background: rgba(12, 14, 18, 0.84);
+  backdrop-filter: blur(8px);
+  color: var(--dark-paper);
+}
+
+.hero-preview-note span, .hero-preview-note small {
+  color: rgba(232, 232, 225, 0.7);
+  font-size: 9px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-preview-note strong {
+  margin: 11px 0 auto;
+  font-size: clamp(13px, 1.25vw, 18px);
+  font-weight: 500;
+  letter-spacing: -.04em;
+  line-height: 1.18;
+  color: var(--dark-paper);
+}
+
+.hero-preview-note small { margin-top: 8px; text-transform: none; letter-spacing: 0; color: rgba(232,232,225,0.55); }
+
+.hero-project-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 11px 11px;
+}
+
+.hero-project-bottom h2 { margin: 4px 0 0; font-size: 28px; font-weight: 500; letter-spacing: -.07em; line-height: .95; }
+
+.hero-case-link { padding-bottom: 3px; border-bottom: 1px solid currentColor; font-size: 11px; }
+
+.square-action {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font-size: 18px;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.square-action:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+/* Explore card */
+.explore-card {
+  grid-column: 11 / span 2;
+  grid-row: 3 / span 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.explore-link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  letter-spacing: -.03em;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.explore-link:last-child { border-bottom: 0; }
+.explore-link:hover { background: var(--warm); color: var(--ink); }
+.explore-link small { color: var(--muted); font-size: 10px; letter-spacing: .06em; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+.explore-link:hover small { color: var(--ink); opacity: 0.6; }
+
+/* Projects section */
+.projects-section { padding-bottom: 76px; }
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 34px;
+  padding: 0 0 15px;
+}
+
+.section-title {
+  display: inline-flex;
+  min-height: 35px;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.section-heading p {
+  max-width: none;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.project-row {
+  display: grid;
+  grid-template-columns: minmax(290px, .98fr) minmax(0, 2.02fr);
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.project-info {
+  display: flex;
+  height: 470px;
+  min-height: 470px;
+  flex-direction: column;
+  padding: 18px;
+  background: #f8f8f5;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 10px 25px rgba(12,14,18,.045);
+  transition: border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.project-index { margin: 0 0 17px; color: var(--muted); }
+.project-info h2 {
+  margin: 0;
+  font-size: clamp(36px, 3.7vw, 56px);
+  font-weight: 500;
+  letter-spacing: -.085em;
+  line-height: .92;
+  font-feature-settings: 'ss01';
+}
+
+.project-type {
+  max-width: 340px;
+  margin: 11px 0 0;
+  font-size: 15px;
+  line-height: 1.42;
+  letter-spacing: -.03em;
+}
+
+.project-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 27px 0 18px;
+  border-top: 1px solid var(--line);
+}
+
+.project-facts div {
+  display: flex;
+  min-height: 78px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 11px 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-facts div:nth-child(even) { padding-right: 0; padding-left: 11px; border-left: 1px solid var(--line); }
+.project-facts dt, .project-facts dd { margin: 0; font-size: 11px; line-height: 1.4; }
+.project-facts dt { color: var(--muted); }
+.project-facts dd { letter-spacing: -.015em; }
+
+.project-footer { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  letter-spacing: .03em;
+}
+.project-meta span:last-child { text-align: right; }
+.project-note { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+
+.case-link {
+  display: flex;
+  width: 100%;
+  min-height: 39px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 5px 4px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.case-link:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.project-visual {
+  position: relative;
+  height: 470px;
+  min-height: 470px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(12,14,18,.075);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.project-row:hover .project-info, .project-row:hover .project-visual { border-color: rgba(12,14,18,.42); }
+.project-row:hover .project-info { box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 14px 30px rgba(12,14,18,.065); }
+.project-row:hover .project-visual { box-shadow: 0 17px 36px rgba(12,14,18,.105); }
+
+.project-visual svg { transition: transform 440ms var(--ease-out); }
+.project-row:hover .project-visual svg { transform: scale(1.018); }
+
+.project-palimpsest { grid-template-columns: minmax(0, 2.02fr) minmax(290px, .98fr); }
+.project-palimpsest .project-visual { order: 1; }
+.project-palimpsest .project-info { order: 2; }
+
+/* Editorial visual base */
+.editorial-visual { display: flex; flex-direction: column; }
+
+.editorial-head, .editorial-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 16px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.editorial-head { min-height: 42px; border-bottom: 1px solid currentColor; }
+.editorial-foot { min-height: 48px; border-top: 1px solid currentColor; }
+
+.editorial-stage {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1.38fr) minmax(210px, .62fr);
+  gap: 28px;
+  min-height: 0;
+  padding: 25px;
+}
+
+.editorial-image {
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 12px 24px rgba(12,14,18,.1);
+}
+
+.editorial-image svg { width: 100%; height: 100%; display: block; }
+
+.editorial-feature { display: flex; flex-direction: column; justify-content: flex-end; padding: 4px 2px; }
+.editorial-feature > span { color: var(--muted); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; }
+.editorial-feature strong {
+  margin: 17px 0 0;
+  font-size: clamp(25px, 2.4vw, 38px);
+  font-weight: 500;
+  letter-spacing: -.07em;
+  line-height: .98;
+  font-feature-settings: 'tnum';
+}
+.editorial-feature p { margin: 13px 0 0; font-size: 13px; line-height: 1.42; }
+.editorial-feature small { margin-top: auto; color: var(--muted); font-size: 11px; line-height: 1.45; }
+
+/* Project visuals - each has distinct palette */
+.solis-visual { background: #dfe6ff; color: var(--ink); border-color: rgba(42,60,199,.55); }
+.solis-visual .editorial-image { background: linear-gradient(135deg, #1a1d24 0%, #2a3cc7 100%); }
+
+.paper-visual { background: #ecdccc; color: var(--ink); border-color: rgba(117,91,70,.48); }
+.paper-visual .editorial-image { background: linear-gradient(135deg, #f8f4ed 0%, #f0e3cf 100%); }
+
+.transfer-visual { background: #0c0e12; color: var(--dark-paper); border-color: var(--ink); }
+.transfer-visual .editorial-image { background: linear-gradient(135deg, #1a1d24 0%, #06080a 100%); }
+
+/* All-work card */
+.all-work-card {
+  display: grid;
+  grid-template-columns: .76fr 1.24fr;
+  gap: 16px;
+  min-height: 264px;
+  margin-top: 52px;
+  padding: 15px;
+  overflow: hidden;
+  background: linear-gradient(120deg, #f3f3ec 0%, #eceddf 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 11px 28px rgba(12,14,18,.06);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.all-work-card:hover { border-color: rgba(12,14,18,.45); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 16px 36px rgba(12,14,18,.09); }
+
+.work-bridge-copy { display: flex; flex-direction: column; padding: 5px 6px; }
+.work-bridge-copy > span, .work-bridge-art > span { color: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.work-bridge-copy strong {
+  margin-top: auto;
+  font-size: clamp(24px, 2.65vw, 42px);
+  font-weight: 500;
+  letter-spacing: -.075em;
+  line-height: .96;
+}
+.work-bridge-copy strong .arrow { margin-left: 4px; }
+.work-bridge-copy p { max-width: 390px; margin: 16px 0 1px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+
+.work-bridge-art {
+  position: relative;
+  display: flex;
+  min-height: 232px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: linear-gradient(124deg, #dbd9ff 0%, #f0d7d2 53%, #f5d26d 100%);
+}
+
+.work-bridge-art svg { width: 82%; max-width: 650px; height: 83%; transition: transform 440ms var(--ease-out); }
+.all-work-card:hover .work-bridge-art svg { transform: translateY(-3px) scale(1.015); }
+.work-bridge-art > span { position: absolute; right: 10px; bottom: 9px; color: rgba(12,14,18,.66); }
+
+/* Dark section - studio intro */
+.dark-section {
+  position: relative;
+  margin-top: 10px;
+  background: var(--dark);
+  color: #f0eee5;
+  box-shadow: 0 -10px 30px rgba(12,14,18,.08);
+  overflow: hidden;
+}
+
+.dark-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,232,225,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,232,225,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.dark-shell { position: relative; padding-top: 72px; padding-bottom: 72px; }
+
+.dark-heading { align-items: flex-end; }
+.dark-heading .section-title { border-color: var(--dark-line); color: var(--dark-paper); }
+.dark-heading p { color: rgba(235,234,228,.72); }
+
+.practice-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 17px;
+  overflow: hidden;
+  border: 1px solid var(--dark-line);
+  border-radius: 12px;
+  background: transparent;
+}
+
+.practice-summary div { min-height: 88px; padding: 15px 17px; border-right: 1px solid var(--dark-line); }
+.practice-summary div:last-child { border-right: 0; }
+
+.practice-summary span, .capability-head, .capability-output span {
+  color: var(--dark-muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.practice-summary strong { display: block; margin-top: 19px; font-size: 14px; font-weight: 500; letter-spacing: -.025em; }
+
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.capability-card {
+  display: flex;
+  min-height: 292px;
+  flex-direction: column;
+  padding: 17px;
+  border-color: var(--dark-line);
+  background: rgba(12, 14, 18, 0.4);
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.capability-card:hover {
+  border-color: rgba(240,238,229,.55);
+  background: rgba(255,255,255,.04);
+}
+
+.capability-head { display: flex; justify-content: space-between; gap: 16px; }
+.capability-head span:first-child {
+  color: var(--warm);
+  font-size: 12px;
+  letter-spacing: .02em;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+.capability-head span:last-child { padding-top: 1px; }
+
+.capability-card h3 {
+  margin: 33px 0 10px;
+  font-size: clamp(23px, 2vw, 31px);
+  font-weight: 500;
+  letter-spacing: -.06em;
+  line-height: 1;
+}
+
+.capability-card > p { max-width: 520px; margin: 0; color: #c7c9c1; font-size: 14px; line-height: 1.46; }
+
+.capability-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 19px 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.capability-methods li { color: #d5d7d0; font-size: 11px; line-height: 1.4; }
+.capability-methods li:not(:last-child)::after { margin: 0 8px; color: #777a74; content: "/"; }
+
+.capability-output {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--dark-line);
+}
+.capability-output strong { font-size: 12px; font-weight: 500; text-align: right; }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.12fr .88fr;
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.about-copy-card, .about-graphic-card {
+  min-height: 520px;
+  overflow: hidden;
+  border-color: var(--dark-line);
+  background: rgba(12, 14, 18, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.about-copy-card { display: flex; flex-direction: column; }
+.about-copy-card .card-label { border-color: var(--dark-line); background: transparent; color: var(--dark-muted); }
+
+.about-large {
+  max-width: 710px;
+  margin: 27px 19px 20px;
+  font-size: clamp(25px, 2.7vw, 41px);
+  font-weight: 500;
+  letter-spacing: -.07em;
+  line-height: 1.05;
+}
+
+.about-large .accent-text { color: var(--warm); }
+
+.about-story {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 19px 18px;
+  border-top: 1px solid var(--dark-line);
+  border-bottom: 1px solid var(--dark-line);
+}
+
+.about-story p { margin: 0; padding: 13px 14px 14px 0; color: #d1d3cc; font-size: 12px; line-height: 1.48; }
+.about-story p + p { padding-left: 14px; border-left: 1px solid var(--dark-line); }
+.about-story span { display: block; margin-bottom: 8px; color: var(--dark-muted); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: auto 19px 16px;
+  border-top: 1px solid var(--dark-line);
+  border-bottom: 1px solid var(--dark-line);
+}
+
+.about-facts div { padding: 10px 9px 11px 0; border-right: 1px solid var(--dark-line); }
+.about-facts div:not(:first-child) { padding-left: 10px; }
+.about-facts div:last-child { border-right: 0; }
+.about-facts dt, .about-facts dd { margin: 0; }
+.about-facts dt { color: var(--dark-muted); font-size: 10px; letter-spacing: .05em; }
+.about-facts dd { margin-top: 8px; font-size: 12px; line-height: 1.3; }
+
+.about-small { max-width: 570px; margin: 0 19px 20px; color: var(--dark-muted); font-size: 12px; line-height: 1.45; }
+
+/* Resources mini-grid */
+.resources-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 19px 16px;
+  padding: 12px;
+  border: 1px solid var(--dark-line);
+  border-radius: 9px;
+  background: rgba(6, 8, 10, 0.5);
+}
+
+.resources-list div { padding: 4px 0; }
+.resources-list span { display: block; color: var(--dark-muted); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; }
+.resources-list strong { font-size: 12px; font-weight: 500; color: var(--dark-paper); letter-spacing: -.02em; }
+
+.about-graphic-card {
+  position: relative;
+  background-color: #101210;
+  color: #f0eee5;
+}
+
+.about-graphic-card .card-label { position: relative; z-index: 1; border-color: var(--dark-line); background: transparent; color: var(--dark-muted); }
+
+.about-illustration-wrap {
+  position: relative;
+  z-index: 1;
+  height: 220px;
+  margin: 15px 15px 0;
+  overflow: hidden;
+  border: 1px solid var(--dark-line);
+  border-radius: 9px;
+  background: #f8f8f5;
+  box-shadow: 0 14px 28px rgba(0,0,0,.25);
+}
+
+.about-illustration-wrap svg { width: 100%; height: 100%; display: block; transition: transform 440ms var(--ease-out); }
+.about-graphic-card:hover .about-illustration-wrap svg { transform: scale(1.02); }
+
+.about-illustration-wrap span {
+  position: absolute;
+  right: 8px;
+  bottom: 7px;
+  padding: 5px 7px;
+  border: 1px solid rgba(12,14,18,.25);
+  border-radius: 6px;
+  background: rgba(248,248,245,.9);
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: .06em;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.process-list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 10px 15px 15px;
+  list-style: none;
+}
+
+.process-list li {
+  min-height: 126px;
+  padding: 11px;
+  border: 1px solid var(--dark-line);
+  border-radius: 8px;
+  background: rgba(6, 8, 10, 0.7);
+  transition: background-color 220ms ease, transform 220ms var(--ease-out), border-color 220ms ease;
+}
+
+.process-list li:hover {
+  background: rgba(255,255,255,.06);
+  transform: translateY(-2px);
+  border-color: rgba(240,238,229,.35);
+}
+
+.process-list li span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--warm);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.process-list li p { margin: 27px 0 0; font-size: 13px; line-height: 1.3; letter-spacing: -.025em; }
+
+/* Footer / Contact */
+.site-footer { padding-top: 82px; padding-bottom: 28px; }
+
+.contact-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 245px;
+  padding: 24px;
+  background: linear-gradient(118deg, #dfe6ff 0%, #c9d5ff 55%, #f0d4ca 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 12px 30px rgba(12,14,18,.08);
+}
+
+.contact-card h2 {
+  max-width: 760px;
+  margin: 10px 0 0;
+  font-size: clamp(34px, 4.4vw, 64px);
+  font-weight: 500;
+  letter-spacing: -.085em;
+  line-height: .94;
+}
+
+.contact-context { max-width: 650px; margin: 17px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.contact-button { flex: 0 0 auto; margin-bottom: 2px; background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.contact-button:hover { background: var(--accent); border-color: var(--accent); }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.footer-card {
+  display: flex;
+  min-height: 210px;
+  flex-direction: column;
+  padding: 16px;
+  background: #f6f6f1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 20px rgba(12,14,18,.04);
+}
+
+.footer-title { margin: 0 0 19px; color: var(--muted); }
+.footer-card a, .footer-card > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  padding: 0 1px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.footer-card a:hover { color: var(--accent); }
+
+.footer-card > span b { font-weight: 400; color: var(--muted); font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; }
+
+.footer-note p { max-width: 300px; margin: 0; font-size: 13px; line-height: 1.45; }
+.footer-note .art-credit { margin-top: 13px; color: var(--muted); font-size: 11px; }
+.footer-note > span { margin-top: auto; color: var(--muted); font-size: 10px; letter-spacing: .06em; }
+
+.footer-action {
+  display: flex;
+  width: 100%;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+}
+.footer-action b { color: var(--muted); font-weight: 400; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; }
+.footer-action:hover { color: var(--accent); }
+
+/* Toast */
+.site-toast {
+  position: fixed;
+  right: 50%;
+  bottom: 25px;
+  z-index: 100;
+  display: flex;
+  max-width: min(440px, calc(100vw - 28px));
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px 9px 9px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 10px;
+  background: rgba(12, 14, 18, 0.96);
+  box-shadow: 0 14px 38px rgba(12,14,18,.26);
+  color: #f7f7f4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(50%, 18px);
+  transition: opacity 220ms ease, transform 300ms var(--ease-out);
+}
+
+.site-toast.is-visible { opacity: 1; transform: translate(50%, 0); }
+.site-toast > span {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--warm);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+.site-toast p { margin: 0; font-size: 12px; line-height: 1.35; }
+
+/* Reveal animations */
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion-ready [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+.capability-grid .capability-card:nth-child(2) { --reveal-delay: 70ms; }
+.capability-grid .capability-card:nth-child(3) { --reveal-delay: 90ms; }
+.capability-grid .capability-card:nth-child(4) { --reveal-delay: 140ms; }
+.about-grid .about-graphic-card { --reveal-delay: 90ms; }
+
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes monogram-enter {
+  from { opacity: 0; transform: translateY(10px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 1099px) {
+  .hero-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(8, 88px); }
+  .identity-card { grid-column: 1 / span 4; grid-row: 1 / span 4; }
+  .intro-card { grid-column: 5 / span 4; grid-row: 1 / span 2; }
+  .signal-card { grid-column: 5 / span 2; grid-row: 3 / span 2; }
+  .resume-card { grid-column: 7 / span 2; grid-row: 3 / span 2; }
+  .skills-card { grid-column: 1 / span 4; grid-row: 5 / span 2; }
+  .hero-project-card { grid-column: 5 / span 4; grid-row: 5 / span 4; }
+  .explore-card { grid-column: 5 / span 4; grid-row: 9 / span 4; min-height: 168px; }
+  .project-row { grid-template-columns: minmax(250px, .92fr) minmax(0, 1.6fr); }
+  .project-palimpsest { grid-template-columns: minmax(0, 1.6fr) minmax(250px, .92fr); }
+  .project-info, .project-visual { height: 500px; min-height: 500px; }
+  .editorial-stage { grid-template-columns: minmax(0, 1.08fr) minmax(175px, .72fr); gap: 18px; padding: 18px; }
+  .editorial-feature strong, .editorial-feature p strong { font-size: 27px; }
+  .process-list { grid-template-columns: repeat(2, 1fr); }
+  .about-copy-card, .about-graphic-card { min-height: 640px; }
+}
+
+@media (min-width: 768px) and (max-width: 1240px) {
+  .identity-card { --identity-scene-height: clamp(188px, 17vw, 202px); }
+  .identity-body { gap: 18px; padding-right: 16px; padding-left: 16px; }
+  .identity-card h1 { letter-spacing: -.075em; }
+  .identity-footnote { padding-right: 16px; padding-left: 16px; }
+  .intro-card-content { display: flex; flex-direction: column; gap: 11px; padding: 12px 14px 13px; }
+  .intro-card-content > p { font-size: clamp(13px, 1.25vw, 15px); }
+  .intro-meta { width: 100%; margin-top: auto; }
+  .primary-button { align-self: flex-end; min-height: 36px; padding-right: 13px; padding-left: 13px; }
+}
+
+@media (max-width: 767px) {
+  .site-nav { min-height: 64px; padding: 9px 14px; }
+  .name-pill { max-width: 225px; min-height: 36px; padding: 0 10px; overflow: hidden; font-size: 11px; white-space: nowrap; }
+  .name-pill span:last-child { overflow: hidden; text-overflow: ellipsis; }
+  .pill-divider { height: 12px; }
+  .nav-links { gap: 4px; }
+  .nav-links a { min-width: 43px; min-height: 36px; justify-content: center; padding: 0 9px; font-size: 12px; }
+  .page-shell { padding-right: 14px; padding-left: 14px; }
+  .intro-shell { padding-top: 14px; padding-bottom: 38px; }
+  .section-kicker { padding-bottom: 10px; font-size: 10px; }
+  .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 10px; }
+  .hero-card { min-height: 0; }
+  .identity-card { grid-column: 1 / -1; grid-row: 1; min-height: 408px; }
+  .intro-card { grid-column: 1 / -1; grid-row: 2; min-height: 280px; }
+  .hero-project-card { grid-column: 1 / -1; grid-row: 3; min-height: 415px; }
+  .skills-card { grid-column: 1 / -1; grid-row: 4; min-height: 190px; }
+  .signal-card { grid-column: 1; grid-row: 5; min-height: 245px; }
+  .resume-card { grid-column: 2; grid-row: 5; min-height: 245px; }
+  .explore-card { grid-column: 1 / -1; grid-row: 6; min-height: 182px; }
+  .identity-body { padding: 15px; }
+  .identity-card h1 { max-width: 360px; font-size: 42px; white-space: normal; }
+  .identity-footnote { padding: 11px 15px 15px; }
+  .intro-card-content { display: flex; flex-direction: column; padding: 14px; }
+  .intro-card-content > p { font-size: 17px; }
+  .intro-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; margin-top: auto; }
+  .intro-meta div { min-width: 0; }
+  .primary-button { width: 100%; }
+  .hero-product-preview { min-height: 285px; }
+  .hero-product-preview svg { width: 100%; height: 65%; }
+  .hero-preview-note { top: auto; bottom: 0; width: 100%; height: 35%; border-top: 1px solid rgba(240,238,229,.18); border-left: 0; background: rgba(12, 14, 18, 0.92); }
+  .hero-preview-note strong { margin: 7px 0 5px; font-size: 14px; }
+  .field-note-body p { font-size: 14px; }
+  .resume-word { font-size: 36px; }
+  .projects-section { padding-bottom: 58px; }
+  .section-heading { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .section-heading p { font-size: 14px; text-align: left; white-space: normal; }
+  .project-row, .project-palimpsest { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .project-info, .project-visual { min-height: 0; }
+  .project-visual, .project-palimpsest .project-visual { order: -1; height: 465px; }
+  .project-info, .project-palimpsest .project-info { order: 0; height: auto; padding: 15px; }
+  .project-index { margin-bottom: 16px; }
+  .project-info h2 { font-size: 43px; }
+  .project-type { max-width: none; margin-top: 10px; font-size: 15px; }
+  .project-facts { margin-top: 26px; margin-bottom: 20px; }
+  .project-facts div { grid-template-columns: 72px 1fr; padding: 10px 0; }
+  .project-footer { margin-top: 0; }
+  .editorial-head, .editorial-foot { padding-right: 13px; padding-left: 13px; font-size: 9px; }
+  .editorial-stage { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; padding: 14px; }
+  .editorial-image { min-height: 220px; }
+  .editorial-feature { min-height: 108px; padding: 0; }
+  .editorial-feature strong { margin-top: 8px; font-size: 24px; }
+  .editorial-feature p { margin-top: 8px; }
+  .editorial-feature small { display: none; }
+  .all-work-card { display: flex; align-items: stretch; flex-direction: column; gap: 12px; min-height: 440px; margin-top: 36px; padding: 10px; }
+  .work-bridge-copy { min-height: 190px; padding: 6px; }
+  .work-bridge-copy strong { font-size: 28px; }
+  .work-bridge-art { min-height: 230px; }
+  .work-bridge-art svg { width: 95%; }
+  .dark-shell { padding-top: 56px; padding-bottom: 56px; }
+  .practice-summary { grid-template-columns: 1fr; margin-top: 10px; }
+  .practice-summary div { min-height: 76px; border-right: 0; border-bottom: 1px solid var(--dark-line); }
+  .practice-summary div:last-child { border-bottom: 0; }
+  .practice-summary strong { margin-top: 12px; }
+  .capability-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+  .capability-card { min-height: 270px; }
+  .about-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 38px; }
+  .about-copy-card { min-height: 590px; }
+  .about-graphic-card { min-height: 680px; }
+  .about-large { margin-right: 15px; margin-left: 15px; font-size: 32px; }
+  .about-story { grid-template-columns: 1fr; margin-right: 15px; margin-left: 15px; }
+  .about-story p { padding: 12px 0; }
+  .about-story p + p { padding-left: 0; border-top: 1px solid var(--dark-line); border-left: 0; }
+  .about-facts { grid-template-columns: 1fr; margin-right: 15px; margin-left: 15px; }
+  .about-facts div, .about-facts div:not(:first-child) { padding: 8px 0; border-right: 0; border-bottom: 1px solid var(--dark-line); }
+  .about-facts div:last-child { border-bottom: 0; }
+  .about-facts dt, .about-facts dd { display: inline; }
+  .about-facts dd { margin-left: 12px; }
+  .about-small { margin-right: 15px; margin-left: 15px; }
+  .resources-list { margin-right: 15px; margin-left: 15px; }
+  .about-illustration-wrap { height: 230px; }
+  .process-list { grid-template-columns: repeat(2,1fr); padding: 10px 12px 12px; }
+  .process-list li { min-height: 180px; padding: 11px; }
+  .process-list li p { margin-top: 40px; font-size: 13px; }
+  .site-footer { padding-top: 56px; padding-bottom: 17px; }
+  .contact-card { align-items: flex-start; flex-direction: column; min-height: 285px; padding: 17px; }
+  .contact-card h2 { font-size: 42px; }
+  .contact-context { margin-top: 14px; }
+  .contact-button { width: 100%; }
+  .footer-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+  .footer-card { min-height: 174px; }
+  .footer-note { min-height: 190px; }
+}
+
+@media (max-width: 420px) {
+  .name-pill { max-width: 183px; }
+  .name-pill span:last-child { display: none; }
+  .site-nav { gap: 8px; }
+  .nav-links a { min-width: 42px; padding: 0 7px; }
+  .identity-card h1 { font-size: 39px; }
+  .project-visual { height: 455px; }
+  .contact-card h2 { font-size: 39px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .motion-ready [data-reveal] { opacity: 1; transform: none; }
+  .live-dot i { animation: none; }
+}
+</style>
+</head>
+<body>
+<main>
+<div class="site-toast" role="status" aria-live="polite"><span aria-hidden="true">i</span><p></p></div>
+
+<nav class="site-nav" aria-label="主导航">
+  <a class="name-pill" href="#top" aria-label="回到首页">
+    <span>极智矩阵</span>
+    <span class="pill-divider" aria-hidden="true"></span>
+    <span>Ultimatrix · AI OPC Studio</span>
+    <span class="pill-divider" aria-hidden="true"></span>
+    <span class="mono">v1.0</span>
+  </a>
+  <div class="nav-links">
+    <a href="#projects">业务</a>
+    <a href="#studio">工作室</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="page-shell intro-shell" id="top" aria-labelledby="intro-title">
+  <div class="section-kicker">
+    <span>极智矩阵 · Ultimatrix AI Studio / 2026</span>
+    <span>深圳 · 前海 OPC 申请中</span>
+  </div>
+  <div class="hero-grid">
+
+    <!-- Identity card -->
+    <article class="hero-card identity-card">
+      <div class="card-label"><span>01 / 创始人</span><span>FOUNDER</span></div>
+      <div class="identity-body">
+        <div class="identity-scene">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="nodeGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4a5cff"/>
+                <stop offset="100%" stop-color="#7c5cff"/>
+              </linearGradient>
+              <linearGradient id="nodeWarm" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f3b13a"/>
+                <stop offset="100%" stop-color="#ff7a59"/>
+              </linearGradient>
+              <radialGradient id="glowBlue" cx="50%" cy="50%">
+                <stop offset="0%" stop-color="#4a5cff" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#4a5cff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- Background grid -->
+            <g opacity="0.12" stroke="#0c0e12" stroke-width="0.5">
+              <line x1="0" y1="25" x2="400" y2="25"/>
+              <line x1="0" y1="50" x2="400" y2="50"/>
+              <line x1="0" y1="75" x2="400" y2="75"/>
+              <line x1="0" y1="100" x2="400" y2="100"/>
+              <line x1="0" y1="125" x2="400" y2="125"/>
+              <line x1="0" y1="150" x2="400" y2="150"/>
+              <line x1="0" y1="175" x2="400" y2="175"/>
+              <line x1="50" y1="0" x2="50" y2="200"/>
+              <line x1="100" y1="0" x2="100" y2="200"/>
+              <line x1="150" y1="0" x2="150" y2="200"/>
+              <line x1="200" y1="0" x2="200" y2="200"/>
+              <line x1="250" y1="0" x2="250" y2="200"/>
+              <line x1="300" y1="0" x2="300" y2="200"/>
+              <line x1="350" y1="0" x2="350" y2="200"/>
+            </g>
+            <!-- Glow halos -->
+            <circle cx="130" cy="80" r="60" fill="url(#glowBlue)"/>
+            <circle cx="290" cy="130" r="50" fill="url(#glowBlue)"/>
+            <!-- Connection lines (data paths) -->
+            <g stroke="#4a5cff" stroke-width="1" fill="none" opacity="0.55">
+              <path d="M 100 75 L 200 100" stroke-dasharray="2 3"/>
+              <path d="M 200 100 L 300 130" stroke-dasharray="2 3"/>
+              <path d="M 150 50 L 250 75" stroke-dasharray="2 3"/>
+              <path d="M 100 150 L 200 100" stroke-dasharray="2 3"/>
+              <path d="M 250 50 L 350 100" stroke-dasharray="2 3"/>
+            </g>
+            <g stroke="#7c5cff" stroke-width="1" fill="none" opacity="0.4">
+              <path d="M 100 75 L 150 50"/>
+              <path d="M 250 75 L 300 130"/>
+              <path d="M 100 150 L 150 50" stroke-dasharray="1 2"/>
+              <path d="M 200 100 L 250 50" stroke-dasharray="1 2"/>
+              <path d="M 350 100 L 300 130"/>
+            </g>
+            <!-- Nodes (matrix points) -->
+            <g>
+              <circle cx="100" cy="75" r="5" fill="url(#nodeGrad)"/>
+              <circle cx="150" cy="50" r="4" fill="url(#nodeGrad)"/>
+              <circle cx="200" cy="100" r="7" fill="url(#nodeWarm)"/>
+              <circle cx="250" cy="50" r="3.5" fill="url(#nodeGrad)"/>
+              <circle cx="250" cy="75" r="4.5" fill="url(#nodeGrad)"/>
+              <circle cx="300" cy="130" r="6" fill="url(#nodeGrad)"/>
+              <circle cx="350" cy="100" r="4" fill="url(#nodeGrad)"/>
+              <circle cx="100" cy="150" r="4.5" fill="url(#nodeGrad)"/>
+              <circle cx="150" cy="125" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="200" cy="150" r="3.5" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="300" cy="50" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="350" cy="150" r="3.5" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="50" cy="100" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="50" cy="50" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="50" cy="150" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="150" cy="175" r="3" fill="#0c0e12" opacity="0.6"/>
+              <circle cx="250" cy="175" r="3" fill="#0c0e12" opacity="0.6"/>
+            </g>
+            <!-- Center accent -->
+            <circle cx="200" cy="100" r="14" fill="none" stroke="url(#nodeWarm)" stroke-width="1" opacity="0.5"/>
+            <circle cx="200" cy="100" r="20" fill="none" stroke="url(#nodeWarm)" stroke-width="0.5" opacity="0.3"/>
+            <!-- Corner monogram -->
+            <g font-family="'JetBrains Mono', monospace" font-size="8" fill="#0c0e12" opacity="0.55">
+              <text x="8" y="14">UMX.MATRIX</text>
+              <text x="354" y="194">U·2026</text>
+            </g>
+          </svg>
+          <span class="identity-stamp" aria-hidden="true">UMX / 26</span>
+        </div>
+        <div class="identity-copy">
+          <p class="micro-copy">GUANG YANG · AI OPC FOUNDER</p>
+          <h1 id="intro-title">用一套 AI Agent<br/>撑起一个人的公司。</h1>
+        </div>
+      </div>
+      <p class="identity-footnote">
+        <span>斯坦福博士 · AWS 资深应用科学家</span>
+        <a href="#studio" class="arrow-link">了解工作室 →</a>
+      </p>
+    </article>
+
+    <!-- Intro card -->
+    <article class="hero-card intro-card">
+      <div class="card-label"><span>02 / 简介</span><span class="live-dot"><i aria-hidden="true"></i> 可合作</span></div>
+      <div class="intro-card-content">
+        <p>极智矩阵（Ultimatrix）是我一个人运营的 AI 工作室。一套 Agent 底层，同时跑通 AI 短剧、AI 设计与量化投研三条赛道。</p>
+        <dl class="intro-meta">
+          <div><dt>模式</dt><dd>一人 OPC</dd></div>
+          <div><dt>业务</dt><dd>三条赛道</dd></div>
+          <div><dt>周期</dt><dd>4—12 周</dd></div>
+        </dl>
+        <a class="button primary-button" href="#projects">查看三条赛道 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- Signal card -->
+    <article class="hero-card signal-card">
+      <div class="card-label"><span>SIGNAL</span><span>03</span></div>
+      <div class="field-note-body">
+        <strong>3 / 3</strong>
+        <p>一套底层技术，三个高增长赛道。一份固定成本，三条现金流。</p>
+      </div>
+      <a class="text-action inverted" href="#studio">了解模式 <span class="arrow">→</span></a>
+    </article>
+
+    <!-- Resume card -->
+    <article class="hero-card resume-card">
+      <div class="card-label"><span>简历</span><span>04</span></div>
+      <div class="resume-word">CV.pdf</div>
+      <dl class="resume-meta">
+        <div><dt>内容</dt><dd>经历 / 项目 / 资质</dd></div>
+        <div><dt>版本</dt><dd>中英双语</dd></div>
+        <div><dt>更新</dt><dd>2026 · 09</dd></div>
+      </dl>
+      <button class="button quiet-button" type="button" data-toast="简历 PDF 已生成，部署上线后提供下载链接。">查看简历</button>
+    </article>
+
+    <!-- Skills card -->
+    <article class="hero-card skills-card">
+      <div class="card-label"><span>技术栈</span><span>4 组</span></div>
+      <div class="skill-list">
+        <div><span>01 / ML &amp; DL</span><strong>LLM / Agent / RAG · 训练与推理</strong></div>
+        <div><span>02 / 工程</span><strong>TypeScript / Python / SQL / 云原生</strong></div>
+        <div><span>03 / 数据</span><strong>Spark / Databricks / Snowflake / 向量库</strong></div>
+        <div><span>04 / 金融</span><strong>CFA L3 · 量化策略 / 回测 / 风控</strong></div>
+      </div>
+    </article>
+
+    <!-- Hero project card (Quant Agent featured) -->
+    <article class="hero-card hero-project-card">
+      <div class="card-label"><span>Featured / 03</span><span>量化 Agent</span></div>
+      <div class="hero-product-preview" aria-label="量化 Agent 系统 Dashboard 预览">
+        <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="qLine" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#4a5cff"/>
+              <stop offset="100%" stop-color="#00d4a8"/>
+            </linearGradient>
+            <linearGradient id="qFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a5cff" stop-opacity="0.32"/>
+              <stop offset="100%" stop-color="#4a5cff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="360" fill="#0c0e12"/>
+          <!-- Subtle grid -->
+          <g stroke="#1a1d24" stroke-width="0.5">
+            <line x1="0" y1="60" x2="600" y2="60"/>
+            <line x1="0" y1="120" x2="600" y2="120"/>
+            <line x1="0" y1="180" x2="600" y2="180"/>
+            <line x1="0" y1="240" x2="600" y2="240"/>
+            <line x1="0" y1="300" x2="600" y2="300"/>
+            <line x1="100" y1="0" x2="100" y2="360"/>
+            <line x1="200" y1="0" x2="200" y2="360"/>
+            <line x1="300" y1="0" x2="300" y2="360"/>
+            <line x1="400" y1="0" x2="400" y2="360"/>
+            <line x1="500" y1="0" x2="500" y2="360"/>
+          </g>
+          <!-- Area chart -->
+          <path d="M 0 260 L 50 240 L 100 200 L 150 220 L 200 170 L 250 190 L 300 140 L 350 160 L 400 100 L 450 130 L 500 80 L 550 110 L 600 60 L 600 360 L 0 360 Z" fill="url(#qFill)"/>
+          <!-- Line chart -->
+          <path d="M 0 260 L 50 240 L 100 200 L 150 220 L 200 170 L 250 190 L 300 140 L 350 160 L 400 100 L 450 130 L 500 80 L 550 110 L 600 60" fill="none" stroke="url(#qLine)" stroke-width="2.5"/>
+          <!-- Key points -->
+          <g fill="#00d4a8">
+            <circle cx="200" cy="170" r="3"/>
+            <circle cx="400" cy="100" r="3"/>
+            <circle cx="600" cy="60" r="3"/>
+          </g>
+          <!-- Sparkline annotation -->
+          <g font-family="'JetBrains Mono', monospace" font-size="9" fill="#a8aaa3">
+            <text x="20" y="30">UMX / QUANT · LIVE</text>
+            <text x="500" y="30" fill="#00d4a8">+47.2%</text>
+            <text x="20" y="340">00:00</text>
+            <text x="580" y="340" text-anchor="end">24h</text>
+          </g>
+          <!-- Floating strategy tags -->
+          <g>
+            <rect x="20" y="50" width="92" height="22" rx="11" fill="rgba(74,92,255,0.18)" stroke="rgba(74,92,255,0.4)" stroke-width="0.5"/>
+            <text x="66" y="64" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#dfe3ff">STRATEGY · A1</text>
+            <rect x="118" y="50" width="92" height="22" rx="11" fill="rgba(0,212,168,0.16)" stroke="rgba(0,212,168,0.4)" stroke-width="0.5"/>
+            <text x="164" y="64" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8e3d6">STRATEGY · B3</text>
+            <rect x="20" y="290" width="148" height="22" rx="11" fill="rgba(243,177,58,0.16)" stroke="rgba(243,177,58,0.4)" stroke-width="0.5"/>
+            <text x="94" y="304" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#f3d8a8">CRAWLING · 184 / 2h</text>
+          </g>
+        </svg>
+        <div class="hero-preview-note">
+          <span>UMX · Quant</span>
+          <strong>7×24 Agent 实时爬取<br/>187 个公开交易策略</strong>
+          <small>回测通过率 23% · 头部夏普 2.4</small>
+        </div>
+      </div>
+      <div class="hero-project-bottom">
+        <div>
+          <span class="micro-copy">AGENT RESEARCH · 03</span>
+          <h2>极智投研</h2>
+        </div>
+        <a class="hero-case-link" href="#projects">查看项目</a>
+      </div>
+    </article>
+
+    <!-- Explore card -->
+    <article class="hero-card explore-card">
+      <div class="card-label"><span>业务索引</span><span>05</span></div>
+      <a href="#project-drama" class="explore-link"><span>极智短剧</span><small>01</small></a>
+      <a href="#project-design" class="explore-link"><span>极智设计</span><small>02</small></a>
+      <a href="#project-quant" class="explore-link"><span>极智投研</span><small>03</small></a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="page-shell projects-section" id="projects" aria-labelledby="projects-title">
+  <div class="section-heading" data-reveal="true">
+    <span class="section-title" id="projects-title">三条赛道</span>
+    <p>内容 · 设计 · 投研 —— 共享一套 Agent 底层与算力调度。</p>
+  </div>
+
+  <!-- Project 01 - 极智短剧 -->
+  <article class="project-row" id="project-drama" data-reveal="true">
+    <div class="project-info">
+      <div class="project-info-main">
+        <p class="project-index">01 / 内容生产 · AI 短剧</p>
+        <h2>极智短剧</h2>
+        <p class="project-type">从选题到成片全流程 AI 工业化，单条成本下降 90%，产能提升 10 倍。</p>
+      </div>
+      <dl class="project-facts">
+        <div><dt>使用场景</dt><dd>商单 / 平台分发 / IP 孵化</dd></div>
+        <div><dt>关键能力</dt><dd>剧本 / 分镜 / 数字人 / 配音</dd></div>
+        <div><dt>设计重点</dt><dd>合规自检 + 平台适配</dd></div>
+        <div><dt>交付内容</dt><dd>成片 + 工作流授权</dd></div>
+      </dl>
+      <div class="project-footer">
+        <div class="project-meta"><span>2026 · MVP</span><span>AI 内容工业化</span></div>
+        <button class="case-link" type="button" data-toast="短剧生产线正在持续搭建中，敬请期待成片样例。">了解工作流 <span aria-hidden="true" class="arrow">→</span></button>
+      </div>
+    </div>
+    <div class="project-visual editorial-visual solis-visual" aria-label="极智短剧项目视觉">
+      <div class="editorial-head"><span>01 / 极智短剧</span><span>AI · DRAMA PIPELINE</span></div>
+      <div class="editorial-stage">
+        <div class="editorial-image">
+          <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="clapperGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1a1d24"/>
+                <stop offset="100%" stop-color="#0c0e12"/>
+              </linearGradient>
+              <linearGradient id="stripGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#1a1d24"/>
+                <stop offset="50%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#1a1d24"/>
+              </linearGradient>
+            </defs>
+            <!-- Floor shadow -->
+            <ellipse cx="180" cy="320" rx="130" ry="14" fill="#0c0e12" opacity="0.18"/>
+            <!-- Clapper body -->
+            <g transform="translate(180, 180)">
+              <!-- Base bar (bottom half - solid) -->
+              <rect x="-130" y="-10" width="260" height="140" rx="10" fill="url(#clapperGrad)"/>
+              <!-- Hinge -->
+              <rect x="-130" y="-2" width="260" height="6" fill="#4a5cff" opacity="0.7"/>
+              <!-- Top bar (clapper - striped) -->
+              <g transform="translate(0, -90) rotate(-8)">
+                <rect x="-130" y="-25" width="260" height="50" rx="6" fill="url(#clapperGrad)"/>
+                <!-- Stripes -->
+                <g>
+                  <rect x="-128" y="-23" width="32" height="46" fill="url(#stripGrad)"/>
+                  <rect x="-64" y="-23" width="32" height="46" fill="url(#stripGrad)"/>
+                  <rect x="0" y="-23" width="32" height="46" fill="url(#stripGrad)"/>
+                  <rect x="64" y="-23" width="32" height="46" fill="url(#stripGrad)"/>
+                </g>
+                <!-- AI label -->
+                <rect x="-30" y="-12" width="60" height="24" rx="4" fill="#f3b13a"/>
+                <text x="0" y="4" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" fill="#0c0e12">AI</text>
+              </g>
+              <!-- Label on body -->
+              <text x="-110" y="60" font-family="'JetBrains Mono', monospace" font-size="10" fill="#a8aaa3" letter-spacing="2">SCENE 01 / TAKE 03</text>
+              <text x="-110" y="80" font-family="'JetBrains Mono', monospace" font-size="10" fill="#a8aaa3" letter-spacing="2">RUNTIME 00:48</text>
+              <!-- Status dot -->
+              <circle cx="115" cy="60" r="4" fill="#00d4a8"/>
+              <text x="100" y="80" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="9" fill="#00d4a8">REC</text>
+            </g>
+            <!-- Neural pattern overlay (subtle) -->
+            <g opacity="0.25" stroke="#4a5cff" stroke-width="0.5" fill="none">
+              <circle cx="60" cy="60" r="2"/>
+              <circle cx="60" cy="60" r="12"/>
+              <circle cx="300" cy="60" r="2"/>
+              <circle cx="300" cy="60" r="14"/>
+              <line x1="60" y1="60" x2="300" y2="60" stroke-dasharray="2 3"/>
+              <circle cx="60" cy="300" r="2"/>
+              <circle cx="300" cy="300" r="2"/>
+              <line x1="60" y1="300" x2="300" y2="300" stroke-dasharray="2 3"/>
+            </g>
+            <!-- Top label -->
+            <text x="20" y="22" font-family="'JetBrains Mono', monospace" font-size="8" fill="#5b6168" letter-spacing="1">AI · DRAMA · PIPELINE</text>
+          </svg>
+        </div>
+        <div class="editorial-feature">
+          <span>当前流水线</span>
+          <strong>4 步出片 · 24 分钟</strong>
+          <p>选题 → 剧本 → 分镜/数字人 → 剪辑/合规。一次配置，全平台复用。</p>
+          <small>已对接抖音 / 快手 / 红果短剧分发规则。</small>
+        </div>
+      </div>
+      <div class="editorial-foot"><span>UMX · DRAMA</span><span>单条成本 ≈ ¥120</span></div>
+    </div>
+  </article>
+
+  <!-- Project 02 - 极智设计 -->
+  <article class="project-row project-palimpsest" id="project-design" data-reveal="true">
+    <div class="project-info">
+      <div class="project-info-main">
+        <p class="project-index">02 / 商业设计 · AI 一键生成</p>
+        <h2>极智设计</h2>
+        <p class="project-type">网页、装修、服装三类设计需求的 AI 工具集；分钟级交付，单次 / 订阅双轨变现。</p>
+      </div>
+      <dl class="project-facts">
+        <div><dt>使用场景</dt><dd>建站 / 装修 / 服装设计</dd></div>
+        <div><dt>关键能力</dt><dd>一键生成 / 模板库 / 风格替换</dd></div>
+        <div><dt>设计重点</dt><dd>分钟级交付 + 商用授权</dd></div>
+        <div><dt>独家资源</dt><dd>深圳服装供应链 + 趋势数据</dd></div>
+      </dl>
+      <div class="project-footer">
+        <div class="project-meta"><span>2026 · MVP</span><span>设计工业化</span></div>
+        <button class="case-link" type="button" data-toast="设计工具首批模板上线筹备中。">查看工具能力 <span aria-hidden="true" class="arrow">→</span></button>
+      </div>
+    </div>
+    <div class="project-visual editorial-visual paper-visual" aria-label="极智设计项目视觉">
+      <div class="editorial-head"><span>02 / 极智设计</span><span>WEB · SPACE · WEAR</span></div>
+      <div class="editorial-stage">
+        <div class="editorial-feature">
+          <span>三类入口</span>
+          <strong>网页 · 装修 · 服装</strong>
+          <p>一键生成企业站、户型方案与服装设计稿，分钟级交付，商用授权清晰。</p>
+        </div>
+        <div class="editorial-image">
+          <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="webGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f8f4ed"/>
+                <stop offset="100%" stop-color="#ecdccc"/>
+              </linearGradient>
+            </defs>
+            <!-- Backdrop -->
+            <rect width="360" height="360" fill="url(#webGrad)"/>
+
+            <!-- Web layout mockup (left) -->
+            <g transform="translate(30, 40)">
+              <rect x="0" y="0" width="150" height="106" rx="6" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+              <rect x="0" y="0" width="150" height="22" rx="6" fill="#1a1d24"/>
+              <circle cx="10" cy="11" r="2.5" fill="#ff6b6b"/>
+              <circle cx="20" cy="11" r="2.5" fill="#ffd166"/>
+              <circle cx="30" cy="11" r="2.5" fill="#06d6a0"/>
+              <rect x="10" y="32" width="80" height="6" rx="3" fill="#1a1d24"/>
+              <rect x="10" y="44" width="56" height="4" rx="2" fill="#a8aaa3"/>
+              <rect x="10" y="58" width="50" height="16" rx="3" fill="#4a5cff"/>
+              <text x="35" y="69" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="600" fill="#ffffff">CTA</text>
+              <rect x="68" y="58" width="74" height="40" rx="3" fill="#ecdccc"/>
+              <rect x="10" y="80" width="36" height="18" rx="3" fill="#f0e3cf"/>
+              <rect x="50" y="80" width="36" height="18" rx="3" fill="#f0e3cf"/>
+              <rect x="90" y="80" width="50" height="18" rx="3" fill="#1a1d24"/>
+              <!-- AI badge -->
+              <rect x="115" y="-10" width="36" height="18" rx="9" fill="#f3b13a"/>
+              <text x="133" y="2" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="600" fill="#0c0e12">AI · WEB</text>
+            </g>
+
+            <!-- Floor plan / interior (right top) -->
+            <g transform="translate(200, 40)">
+              <rect x="0" y="0" width="130" height="106" rx="6" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+              <rect x="6" y="6" width="118" height="94" fill="#f5f0e3"/>
+              <!-- Walls -->
+              <g stroke="#1a1d24" stroke-width="1.4" fill="none">
+                <rect x="6" y="6" width="118" height="94"/>
+                <line x1="60" y1="6" x2="60" y2="60"/>
+                <line x1="6" y1="60" x2="60" y2="60"/>
+                <line x1="80" y1="60" x2="80" y2="100"/>
+              </g>
+              <!-- Furniture -->
+              <rect x="14" y="14" width="40" height="22" fill="#4a5cff" opacity="0.65"/>
+              <circle cx="80" cy="78" r="10" fill="#00d4a8" opacity="0.7"/>
+              <rect x="90" y="68" width="28" height="28" fill="#f3b13a" opacity="0.75"/>
+              <!-- AI badge -->
+              <rect x="95" y="-10" width="36" height="18" rx="9" fill="#7c5cff"/>
+              <text x="113" y="2" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="600" fill="#ffffff">AI · SPACE</text>
+            </g>
+
+            <!-- Fashion design (bottom left) -->
+            <g transform="translate(30, 170)">
+              <rect x="0" y="0" width="150" height="160" rx="6" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+              <!-- Dress silhouette -->
+              <path d="M 75 22 L 60 36 L 56 70 L 48 130 L 102 130 L 94 70 L 90 36 Z" fill="#1a1d24"/>
+              <!-- Pattern -->
+              <g opacity="0.7">
+                <circle cx="64" cy="60" r="3" fill="#f3b13a"/>
+                <circle cx="82" cy="78" r="3" fill="#f3b13a"/>
+                <circle cx="70" cy="92" r="3" fill="#f3b13a"/>
+                <circle cx="86" cy="110" r="3" fill="#f3b13a"/>
+                <circle cx="76" cy="50" r="2" fill="#ffffff"/>
+                <circle cx="80" cy="100" r="2" fill="#ffffff"/>
+              </g>
+              <!-- Tag -->
+              <rect x="110" y="14" width="32" height="16" rx="2" fill="#f5f0e3" stroke="#1a1d24" stroke-width="0.5"/>
+              <line x1="118" y1="20" x2="134" y2="20" stroke="#1a1d24" stroke-width="0.5"/>
+              <line x1="118" y1="24" x2="128" y2="24" stroke="#1a1d24" stroke-width="0.5"/>
+              <text x="76" y="150" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#5b6168" letter-spacing="1">DESIGN · v3</text>
+              <!-- AI badge -->
+              <rect x="115" y="-10" width="36" height="18" rx="9" fill="#00d4a8"/>
+              <text x="133" y="2" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="600" fill="#0c0e12">AI · WEAR</text>
+            </g>
+
+            <!-- Side panel (right bottom) -->
+            <g transform="translate(200, 170)">
+              <rect x="0" y="0" width="130" height="160" rx="6" fill="#1a1d24"/>
+              <text x="12" y="20" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3" letter-spacing="1">UMX · TEMPLATES</text>
+              <text x="12" y="36" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ecece5">238</text>
+              <text x="36" y="36" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3">模板</text>
+              <!-- Mini bars -->
+              <g>
+                <rect x="12" y="48" width="80" height="4" rx="2" fill="#4a5cff"/>
+                <rect x="12" y="56" width="50" height="4" rx="2" fill="#7c5cff"/>
+                <rect x="12" y="64" width="96" height="4" rx="2" fill="#00d4a8"/>
+                <rect x="12" y="72" width="62" height="4" rx="2" fill="#f3b13a"/>
+                <rect x="12" y="80" width="40" height="4" rx="2" fill="#4a5cff"/>
+              </g>
+              <!-- Stat -->
+              <text x="12" y="108" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3" letter-spacing="1">AVG · TURNAROUND</text>
+              <text x="12" y="128" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#ecece5">3 min</text>
+              <text x="12" y="146" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3">≈ 行业 1/40</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="editorial-foot"><span>UMX · DESIGN</span><span>单次 ¥39 起 · 月度订阅 ¥199</span></div>
+    </div>
+  </article>
+
+  <!-- Project 03 - 极智投研 -->
+  <article class="project-row" id="project-quant" data-reveal="true">
+    <div class="project-info">
+      <div class="project-info-main">
+        <p class="project-index">03 / 量化投研 · Agent 系统</p>
+        <h2>极智投研</h2>
+        <p class="project-type">7×24 Agent 全网爬取交易策略，自动解析逻辑、批量回测，可视化 Dashboard 实时排名。</p>
+      </div>
+      <dl class="project-facts">
+        <div><dt>使用场景</dt><dd>个人 / 工作室 / 小型资管</dd></div>
+        <div><dt>关键能力</dt><dd>策略爬虫 / 解析 / 回测 / 排名</dd></div>
+        <div><dt>设计重点</dt><dd>实时更新 · 剔除拟合</dd></div>
+        <div><dt>交付内容</dt><dd>Dashboard / 私有部署</dd></div>
+      </dl>
+      <div class="project-footer">
+        <div class="project-meta"><span>2026 · 内测</span><span>技术壁垒业务</span></div>
+        <button class="case-link" type="button" data-toast="Dashboard 正在打磨中，目前仅对合作机构开放预览。">申请内测 <span aria-hidden="true" class="arrow">→</span></button>
+      </div>
+    </div>
+    <div class="project-visual editorial-visual transfer-visual" aria-label="极智投研项目视觉">
+      <div class="editorial-head"><span>03 / 极智投研</span><span>AGENT · RESEARCH</span></div>
+      <div class="editorial-stage">
+        <div class="editorial-feature">
+          <span>实时数据流</span>
+          <strong>187 策略 / 24h</strong>
+          <p>全网公开策略自动爬取 → NLP 拆解 → 多周期回测 → 实时 Dashboard 排名。</p>
+        </div>
+        <div class="editorial-image">
+          <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="quantGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1a1d24"/>
+                <stop offset="100%" stop-color="#06080a"/>
+              </linearGradient>
+              <linearGradient id="qStroke" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#4a5cff"/>
+                <stop offset="100%" stop-color="#00d4a8"/>
+              </linearGradient>
+            </defs>
+            <rect width="360" height="360" fill="url(#quantGrad)"/>
+            <!-- Grid -->
+            <g stroke="#1a1d24" stroke-width="0.5">
+              <line x1="0" y1="60" x2="360" y2="60"/>
+              <line x1="0" y1="120" x2="360" y2="120"/>
+              <line x1="0" y1="180" x2="360" y2="180"/>
+              <line x1="0" y1="240" x2="360" y2="240"/>
+              <line x1="0" y1="300" x2="360" y2="300"/>
+              <line x1="60" y1="0" x2="60" y2="360"/>
+              <line x1="120" y1="0" x2="120" y2="360"/>
+              <line x1="180" y1="0" x2="180" y2="360"/>
+              <line x1="240" y1="0" x2="240" y2="360"/>
+              <line x1="300" y1="0" x2="300" y2="360"/>
+            </g>
+            <!-- Candlesticks -->
+            <g>
+              <line x1="40" y1="240" x2="40" y2="280" stroke="#5b6168" stroke-width="1"/>
+              <rect x="35" y="245" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="65" y1="220" x2="65" y2="260" stroke="#5b6168" stroke-width="1"/>
+              <rect x="60" y="225" width="10" height="22" fill="#ff6b6b" opacity="0.85"/>
+              <line x1="90" y1="180" x2="90" y2="220" stroke="#5b6168" stroke-width="1"/>
+              <rect x="85" y="185" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="115" y1="160" x2="115" y2="200" stroke="#5b6168" stroke-width="1"/>
+              <rect x="110" y="170" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="140" y1="140" x2="140" y2="180" stroke="#5b6168" stroke-width="1"/>
+              <rect x="135" y="145" width="10" height="22" fill="#ff6b6b" opacity="0.85"/>
+              <line x1="165" y1="120" x2="165" y2="160" stroke="#5b6168" stroke-width="1"/>
+              <rect x="160" y="125" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="190" y1="100" x2="190" y2="140" stroke="#5b6168" stroke-width="1"/>
+              <rect x="185" y="105" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="215" y1="80" x2="215" y2="120" stroke="#5b6168" stroke-width="1"/>
+              <rect x="210" y="85" width="10" height="22" fill="#ff6b6b" opacity="0.85"/>
+              <line x1="240" y1="60" x2="240" y2="100" stroke="#5b6168" stroke-width="1"/>
+              <rect x="235" y="65" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="265" y1="40" x2="265" y2="80" stroke="#5b6168" stroke-width="1"/>
+              <rect x="260" y="50" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="290" y1="30" x2="290" y2="70" stroke="#5b6168" stroke-width="1"/>
+              <rect x="285" y="35" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+              <line x1="315" y1="20" x2="315" y2="60" stroke="#5b6168" stroke-width="1"/>
+              <rect x="310" y="25" width="10" height="22" fill="#00d4a8" opacity="0.85"/>
+            </g>
+            <!-- Trend line -->
+            <path d="M 30 250 Q 80 230 130 180 T 220 100 T 320 30" fill="none" stroke="url(#qStroke)" stroke-width="2.5"/>
+            <!-- Strategy cards overlay -->
+            <g>
+              <rect x="14" y="320" width="58" height="32" rx="5" fill="rgba(74,92,255,0.18)" stroke="#4a5cff" stroke-width="0.5"/>
+              <text x="22" y="336" font-family="'JetBrains Mono', monospace" font-size="7" fill="#dfe3ff">WIN RATE</text>
+              <text x="22" y="348" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ecece5">68.4%</text>
+              <rect x="78" y="320" width="58" height="32" rx="5" fill="rgba(0,212,168,0.16)" stroke="#00d4a8" stroke-width="0.5"/>
+              <text x="86" y="336" font-family="'JetBrains Mono', monospace" font-size="7" fill="#a8e3d6">SHARPE</text>
+              <text x="86" y="348" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ecece5">2.41</text>
+              <rect x="142" y="320" width="58" height="32" rx="5" fill="rgba(243,177,58,0.16)" stroke="#f3b13a" stroke-width="0.5"/>
+              <text x="150" y="336" font-family="'JetBrains Mono', monospace" font-size="7" fill="#f3d8a8">DD MAX</text>
+              <text x="150" y="348" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ecece5">-7.8%</text>
+            </g>
+            <!-- Live dot -->
+            <circle cx="340" cy="20" r="3" fill="#00d4a8"/>
+            <text x="338" y="40" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="7" fill="#00d4a8" letter-spacing="1">LIVE</text>
+          </svg>
+        </div>
+      </div>
+      <div class="editorial-foot"><span>UMX · QUANT</span><span>实时排名 · 私有部署可选</span></div>
+    </div>
+  </article>
+
+  <!-- All-work CTA card -->
+  <a class="all-work-card" href="#contact" data-reveal="true">
+    <div class="work-bridge-copy">
+      <span>合作入口 / 01—03</span>
+      <strong>把你的复杂需求，<br/>交给一套 AI Agent。 <span aria-hidden="true" class="arrow">→</span></strong>
+      <p>不论是短剧量产、设计交付，还是量化研究，都可以从一个 30 分钟的需求对齐开始。</p>
+    </div>
+    <div class="work-bridge-art">
+      <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bridgeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#f3b13a" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <!-- 3 input cards merging into 1 output -->
+        <g>
+          <!-- Card 1 -->
+          <g transform="translate(60, 50)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#4a5cff"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">01</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+          <!-- Card 2 -->
+          <g transform="translate(60, 120)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#7c5cff"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">02</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+          <!-- Card 3 -->
+          <g transform="translate(60, 190)">
+            <rect width="120" height="60" rx="8" fill="#ffffff" stroke="#1a1d24" stroke-width="1"/>
+            <circle cx="20" cy="30" r="10" fill="#00d4a8"/>
+            <text x="20" y="34" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#ffffff">03</text>
+            <rect x="38" y="20" width="70" height="6" rx="3" fill="#1a1d24"/>
+            <rect x="38" y="32" width="50" height="4" rx="2" fill="#a8aaa3"/>
+            <rect x="38" y="42" width="60" height="4" rx="2" fill="#a8aaa3"/>
+          </g>
+
+          <!-- Flow lines -->
+          <g fill="none" stroke="#1a1d24" stroke-width="1.5" opacity="0.7">
+            <path d="M 180 80 C 240 80, 280 130, 330 130" stroke-dasharray="4 4"/>
+            <path d="M 180 150 L 330 150" stroke-dasharray="4 4"/>
+            <path d="M 180 220 C 240 220, 280 170, 330 170" stroke-dasharray="4 4"/>
+          </g>
+
+          <!-- Center pipeline node -->
+          <g transform="translate(330, 100)">
+            <rect width="100" height="100" rx="14" fill="#1a1d24"/>
+            <text x="50" y="32" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#a8aaa3" letter-spacing="1">UMX · AGENT</text>
+            <text x="50" y="54" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#ecece5">一套底层</text>
+            <g transform="translate(20, 64)">
+              <circle cx="6" cy="6" r="3" fill="#4a5cff"/>
+              <circle cx="20" cy="6" r="3" fill="#7c5cff"/>
+              <circle cx="34" cy="6" r="3" fill="#00d4a8"/>
+              <circle cx="48" cy="6" r="3" fill="#f3b13a"/>
+            </g>
+            <text x="50" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#a8aaa3">三条赛道</text>
+          </g>
+
+          <!-- Output -->
+          <g transform="translate(480, 100)">
+            <rect width="90" height="100" rx="14" fill="#f3b13a" stroke="#1a1d24" stroke-width="1"/>
+            <text x="45" y="34" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" fill="#0c0e12" letter-spacing="1">OUTPUT</text>
+            <text x="45" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="500" fill="#0c0e12">3×</text>
+            <text x="45" y="76" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#0c0e12">现金流</text>
+            <line x1="45" y1="86" x2="45" y2="92" stroke="#0c0e12" stroke-width="1"/>
+            <text x="45" y="96" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12">1 OPC</text>
+          </g>
+        </g>
+      </svg>
+      <span>1 PERSON · 3 STREAMS</span>
+    </div>
+  </a>
+</section>
+
+<!-- ============ STUDIO (DARK) ============ -->
+<section class="dark-section" id="studio" aria-labelledby="studio-title">
+  <div class="page-shell dark-shell">
+    <div class="section-heading dark-heading" data-reveal="true">
+      <span class="section-title">工作室</span>
+      <p id="studio-title">极智矩阵是怎么运转的 — 一人公司也能跑出三条赛道。</p>
+    </div>
+
+    <div class="practice-summary" aria-label="工作范围与模式" data-reveal="true">
+      <div><span>项目类型</span><strong>内容生产 / 商业设计 / 智能投研</strong></div>
+      <div><span>工作方式</span><strong>独立 OPC · 全 AI 驱动</strong></div>
+      <div><span>阶段</span><strong>冷启动 → 规模化 → 品牌化</strong></div>
+    </div>
+
+    <div class="capability-grid">
+      <article class="capability-card" data-reveal="true">
+        <div class="capability-head"><span>01.</span><span>内容生产</span></div>
+        <h3>AI 短剧工业化</h3>
+        <p>从选题、剧本、分镜到数字人、配音、剪辑的全流程 AI 工作流；内置合规自检，适配抖音、快手、红果等全平台。</p>
+        <ul class="capability-methods" aria-label="内容生产方法">
+          <li>LLM 剧本生成</li>
+          <li>分镜 / 数字人</li>
+          <li>合规校验</li>
+          <li>矩阵分发</li>
+        </ul>
+        <div class="capability-output"><span>常见交付</span><strong>成片 · 工作流授权</strong></div>
+      </article>
+
+      <article class="capability-card" data-reveal="true">
+        <div class="capability-head"><span>02.</span><span>商业设计</span></div>
+        <h3>一键网页 / 装修 / 服装</h3>
+        <p>为中小商家、装修公司与服装品牌提供 AI 设计工具集；分钟级交付、批量模板库、清晰商用授权。</p>
+        <ul class="capability-methods" aria-label="设计方法">
+          <li>一键生成</li>
+          <li>户型识别</li>
+          <li>服装出稿</li>
+          <li>模板库</li>
+        </ul>
+        <div class="capability-output"><span>常见交付</span><strong>设计稿 · 工具订阅</strong></div>
+      </article>
+
+      <article class="capability-card" data-reveal="true">
+        <div class="capability-head"><span>03.</span><span>智能投研</span></div>
+        <h3>Agent 量化研究</h3>
+        <p>7×24 Agent 全网爬取交易策略，NLP 拆解逻辑、多周期回测剔除拟合，可视化 Dashboard 实时排名。</p>
+        <ul class="capability-methods" aria-label="投研方法">
+          <li>策略爬虫</li>
+          <li>NLP 解析</li>
+          <li>批量回测</li>
+          <li>实时排名</li>
+        </ul>
+        <div class="capability-output"><span>常见交付</span><strong>Dashboard · 私有部署</strong></div>
+      </article>
+
+      <article class="capability-card" data-reveal="true">
+        <div class="capability-head"><span>04.</span><span>系统工程</span></div>
+        <h3>共享 Agent 底层</h3>
+        <p>三大业务复用同一套 Agent 调度与算力底座；模型路由、成本控制、可观测性统一管理，边际成本持续下降。</p>
+        <ul class="capability-methods" aria-label="工程方法">
+          <li>Agent 调度</li>
+          <li>模型路由</li>
+          <li>可观测性</li>
+          <li>成本控制</li>
+        </ul>
+        <div class="capability-output"><span>常见交付</span><strong>内部平台 · 工程规范</strong></div>
+      </article>
+    </div>
+
+    <div class="about-grid">
+      <article class="about-copy-card" data-reveal="true">
+        <div class="card-label"><span>关于工作室</span><span>ULTIMATRIX</span></div>
+        <p class="about-large">AI 重构<span class="accent-text">内容、设计与投研</span>，一个人也能跑通三条高增长赛道。</p>
+        <div class="about-story">
+          <p><span>如何开始一个赛道</span>用 LLM + Agent 先把流程跑通，再把工具沉淀下来。从人工确认 → 半自动 → 全自动，逐步把交付成本压到最低。</p>
+          <p><span>如何跑通三个赛道</span>共享同一套底层技术、同一份算力与同一套方法论。短剧赚现金流，设计赚毛利，量化赚技术壁垒。</p>
+        </div>
+        <div class="resources-list" aria-label="独家资源">
+          <div>
+            <span>独家供应链</span>
+            <strong>深圳欧宝莱尔服饰</strong>
+          </div>
+          <div>
+            <span>趋势数据源</span>
+            <strong>热点趋势 · WGSN 中国</strong>
+          </div>
+        </div>
+        <dl class="about-facts">
+          <div><dt>注册地</dt><dd>深圳（拟）</dd></div>
+          <div><dt>运营模式</dt><dd>一人 OPC</dd></div>
+          <div><dt>创始人</dt><dd>杨光 / Guang Yang</dd></div>
+        </dl>
+        <p class="about-small">目前已申请入驻前海 OPC 国际社区（最高 200㎡ 免费空间 + 50P 免费算力），并预备深圳天使轮融资。</p>
+      </article>
+
+      <article class="about-graphic-card" aria-label="工作方法图示" data-reveal="true">
+        <div class="card-label"><span>工作流 / 04</span><span>从需求到上线</span></div>
+        <div class="about-illustration-wrap">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="flowLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#4a5cff"/>
+                <stop offset="50%" stop-color="#7c5cff"/>
+                <stop offset="100%" stop-color="#00d4a8"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="220" fill="#f6f6f1"/>
+            <!-- Grid -->
+            <g opacity="0.1" stroke="#0c0e12" stroke-width="0.5">
+              <line x1="50" y1="20" x2="50" y2="200"/>
+              <line x1="125" y1="20" x2="125" y2="200"/>
+              <line x1="200" y1="20" x2="200" y2="200"/>
+              <line x1="275" y1="20" x2="275" y2="200"/>
+              <line x1="350" y1="20" x2="350" y2="200"/>
+            </g>
+            <!-- Flow path -->
+            <path d="M 30 110 C 70 110, 90 60, 130 60 C 170 60, 180 110, 220 110 C 260 110, 270 160, 310 160 C 340 160, 350 110, 380 110" fill="none" stroke="url(#flowLine)" stroke-width="2.5" stroke-dasharray="3 3"/>
+            <!-- Nodes -->
+            <g>
+              <circle cx="30" cy="110" r="8" fill="#4a5cff"/>
+              <text x="30" y="135" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12" letter-spacing="0.5">需求</text>
+              <circle cx="130" cy="60" r="8" fill="#7c5cff"/>
+              <text x="130" y="44" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12" letter-spacing="0.5">建模</text>
+              <circle cx="220" cy="110" r="8" fill="#00d4a8"/>
+              <text x="220" y="135" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12" letter-spacing="0.5">验证</text>
+              <circle cx="310" cy="160" r="8" fill="#f3b13a"/>
+              <text x="310" y="185" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12" letter-spacing="0.5">上线</text>
+              <circle cx="380" cy="110" r="8" fill="#0c0e12"/>
+              <text x="380" y="135" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#0c0e12" letter-spacing="0.5">迭代</text>
+            </g>
+            <!-- Top labels -->
+            <g font-family="'JetBrains Mono', monospace" font-size="8" fill="#5b6168" letter-spacing="1">
+              <text x="20" y="20">UMX · WORKFLOW</text>
+              <text x="380" y="20" text-anchor="end">v1.0 · 2026</text>
+            </g>
+            <!-- Stats panel -->
+            <g transform="translate(20, 170)">
+              <rect width="80" height="36" rx="5" fill="#ffffff" stroke="#1a1d24" stroke-width="0.5"/>
+              <text x="40" y="14" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#5b6168" letter-spacing="0.5">LEAD TIME</text>
+              <text x="40" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#0c0e12">2—6 周</text>
+            </g>
+            <g transform="translate(110, 170)">
+              <rect width="80" height="36" rx="5" fill="#ffffff" stroke="#1a1d24" stroke-width="0.5"/>
+              <text x="40" y="14" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" fill="#5b6168" letter-spacing="0.5">FIXED COST</text>
+              <text x="40" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#0c0e12">≈ 0</text>
+            </g>
+          </svg>
+          <span>PLAN · BUILD · SHIP · ITERATE</span>
+        </div>
+        <ol class="process-list">
+          <li><span>1</span><p>需求拆解：把模糊目标拆成可执行任务</p></li>
+          <li><span>2</span><p>工作流搭建：Agent + 模板快速复刻流程</p></li>
+          <li><span>3</span><p>小规模验证：3—5 个真实样本迭代</p></li>
+          <li><span>4</span><p>规模化与运营：监控 + 持续优化</p></li>
+        </ol>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER / CONTACT ============ -->
+<footer class="page-shell site-footer" id="contact">
+  <section class="contact-card" aria-labelledby="contact-title" data-reveal="true">
+    <div>
+      <p class="micro-copy">项目合作 / 媒体咨询 / 投资</p>
+      <h2 id="contact-title">正在寻找 AI 工作流<br/>或量化研究合作？</h2>
+      <p class="contact-context">不论是短剧量产、设计工具试用，还是 Agent 投研内测，可以从一个 30 分钟的需求对齐开始。</p>
+    </div>
+    <button class="button contact-button" type="button" data-toast="邮箱：guang.k.yang@gmail.com · 微信/电话：+86 18033400322">联系我 <span aria-hidden="true" class="arrow">→</span></button>
+  </section>
+
+  <div class="footer-grid" data-reveal="true">
+    <section class="footer-card">
+      <p class="footer-title">快速导航</p>
+      <a href="#top">回到顶部 <span aria-hidden="true" class="arrow">→</span></a>
+      <a href="#projects">查看业务 <span aria-hidden="true" class="arrow">→</span></a>
+      <a href="#studio">了解工作室 <span aria-hidden="true" class="arrow">→</span></a>
+    </section>
+
+    <section class="footer-card">
+      <p class="footer-title">联系与资料</p>
+      <button class="footer-action" type="button" data-toast="邮箱：guang.k.yang@gmail.com"><span>邮箱</span><b>点击查看</b></button>
+      <button class="footer-action" type="button" data-toast="电话 / 微信：+86 180 3340 0322"><span>电话 / 微信</span><b>+86 · 180</b></button>
+      <button class="footer-action" type="button" data-toast="LinkedIn: linkedin.com/in/guang-kevin-yang-504a0519"><span>LinkedIn</span><b>点击查看</b></button>
+      <button class="footer-action" type="button" data-toast="GitHub: github.com/guangyangsjc18"><span>GitHub</span><b>点击查看</b></button>
+    </section>
+
+    <section class="footer-card footer-note">
+      <p class="footer-title">说明</p>
+      <p>本工作室处于 OPC 冷启动阶段，所有对外内容均为真实进度，案例与数据将在里程碑达成后逐步公开。</p>
+      <p class="art-credit">插图与图标均为原创矢量 / 极简几何示意。</p>
+      <span>© 2026 ULTIMATRIX AI STUDIO · OPC · SHENZHEN</span>
+    </section>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function () {
+  // Scroll reveal
+  var targets = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    targets.forEach(function (el) { el.classList.add("is-visible"); });
+    return;
+  }
+  document.documentElement.classList.add("motion-ready");
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -9% 0px", threshold: 0.08 });
+  targets.forEach(function (el) { observer.observe(el); });
+
+  // Toast
+  var toast = document.querySelector(".site-toast");
+  var msg = toast ? toast.querySelector("p") : null;
+  var timer = null;
+  document.addEventListener("click", function (event) {
+    var target = event.target && event.target.closest ? event.target.closest("[data-toast]") : null;
+    if (!target) return;
+    event.preventDefault();
+    if (timer) clearTimeout(timer);
+    if (toast && msg) {
+      msg.textContent = target.getAttribute("data-toast") || "这项内容正在整理中。";
+      toast.classList.add("is-visible");
+      timer = setTimeout(function () {
+        toast.classList.remove("is-visible");
+      }, 2800);
+    }
+  });
+
+  // Smooth nav highlight
+  var sections = ["projects", "studio", "contact"];
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
+  if ("IntersectionObserver" in window) {
+    var navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var id = entry.target.id;
+        navLinks.forEach(function (a) {
+          if (a.getAttribute("href") === "#" + id) {
+            a.style.color = "var(--accent)";
+          } else {
+            a.style.color = "";
+          }
+        });
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) navObserver.observe(el);
+    });
+  }
+})();
+</script>
+</body>
+</html>

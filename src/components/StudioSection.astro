@@ -1,0 +1,74 @@
+---
+import { capabilities } from '../data/site';
+import WorkflowDots from './illustrations/WorkflowDots.astro';
+---
+
+<section class="dark-section" id="studio" aria-labelledby="studio-title">
+  <div class="page-shell dark-shell">
+    <div class="section-heading dark-heading" data-reveal="true">
+      <span class="section-title">工作室</span>
+      <p id="studio-title">极智矩阵是怎么运转的 — 一人公司也能跑出三条赛道。</p>
+    </div>
+
+    <div class="practice-summary" aria-label="工作范围与模式" data-reveal="true">
+      <div><span>项目类型</span><strong>内容生产 / 商业设计 / 智能投研</strong></div>
+      <div><span>工作方式</span><strong>独立 OPC · 全 AI 驱动</strong></div>
+      <div><span>阶段</span><strong>冷启动 → 规模化 → 品牌化</strong></div>
+    </div>
+
+    <div class="capability-grid">
+      {capabilities.map((cap) => (
+        <article class="capability-card" data-reveal="true">
+          <div class="capability-head"><span>{cap.no}.</span><span>{cap.label}</span></div>
+          <h3>{cap.title}</h3>
+          <p>{cap.body}</p>
+          <ul class="capability-methods" aria-label={`${cap.label}方法`}>
+            {cap.methods.map((m) => <li>{m}</li>)}
+          </ul>
+          <div class="capability-output"><span>常见交付</span><strong>{cap.output}</strong></div>
+        </article>
+      ))}
+    </div>
+
+    <div class="about-grid">
+      <article class="about-copy-card" data-reveal="true">
+        <div class="card-label"><span>关于工作室</span><span>ULTIMATRIX</span></div>
+        <p class="about-large">AI 重构<span class="accent-text">内容、设计与投研</span>，一个人也能跑通三条高增长赛道。</p>
+        <div class="about-story">
+          <p><span>如何开始一个赛道</span>用 LLM + Agent 先把流程跑通，再把工具沉淀下来。从人工确认 → 半自动 → 全自动，逐步把交付成本压到最低。</p>
+          <p><span>如何跑通三个赛道</span>共享同一套底层技术、同一份算力与同一套方法论。短剧赚现金流，设计赚毛利，量化赚技术壁垒。</p>
+        </div>
+        <div class="resources-list" aria-label="独家资源">
+          <div>
+            <span>独家供应链</span>
+            <strong>深圳欧宝莱尔服饰</strong>
+          </div>
+          <div>
+            <span>趋势数据源</span>
+            <strong>热点趋势 · WGSN 中国</strong>
+          </div>
+        </div>
+        <dl class="about-facts">
+          <div><dt>注册地</dt><dd>深圳（拟）</dd></div>
+          <div><dt>运营模式</dt><dd>一人 OPC</dd></div>
+          <div><dt>创始人</dt><dd>杨光 / Guang Yang</dd></div>
+        </dl>
+        <p class="about-small">目前已申请入驻前海 OPC 国际社区（最高 200㎡ 免费空间 + 50P 免费算力），并预备深圳天使轮融资。</p>
+      </article>
+
+      <article class="about-graphic-card" aria-label="工作方法图示" data-reveal="true">
+        <div class="card-label"><span>工作流 / 04</span><span>从需求到上线</span></div>
+        <div class="about-illustration-wrap">
+          <WorkflowDots />
+          <span>PLAN · BUILD · SHIP · ITERATE</span>
+        </div>
+        <ol class="process-list">
+          <li><span>1</span><p>需求拆解：把模糊目标拆成可执行任务</p></li>
+          <li><span>2</span><p>工作流搭建：Agent + 模板快速复刻流程</p></li>
+          <li><span>3</span><p>小规模验证：3—5 个真实样本迭代</p></li>
+          <li><span>4</span><p>规模化与运营：监控 + 持续优化</p></li>
+        </ol>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,115 @@
+---
+import { site, tracks } from '../data/site';
+import MatrixScene from './illustrations/MatrixScene.astro';
+import QuantChart from './illustrations/QuantChart.astro';
+
+const featured = tracks[2]; // 量化投研
+---
+
+<section class="page-shell intro-shell" id="top" aria-labelledby="intro-title">
+  <div class="section-kicker">
+    <span>极智矩阵 · Ultimatrix AI Studio / 2026</span>
+    <span>{site.founder.location} · {site.founder.applyingTo}申请中</span>
+  </div>
+
+  <div class="hero-grid">
+
+    <!-- 01 / 创始人 -->
+    <article class="hero-card identity-card">
+      <div class="card-label"><span>01 / 创始人</span><span>FOUNDER</span></div>
+      <div class="identity-body">
+        <div class="identity-scene">
+          <MatrixScene />
+          <span class="identity-stamp" aria-hidden="true">UMX / 26</span>
+        </div>
+        <div class="identity-copy">
+          <p class="micro-copy">GUANG YANG · AI OPC FOUNDER</p>
+          <h1 id="intro-title">{site.founder.shortTitle.zh}</h1>
+        </div>
+      </div>
+      <p class="identity-footnote">
+        <span>{site.founder.title.zh}</span>
+        <a href="#studio" class="arrow-link">了解工作室 →</a>
+      </p>
+    </article>
+
+    <!-- 02 / 简介 -->
+    <article class="hero-card intro-card">
+      <div class="card-label"><span>02 / 简介</span><span class="live-dot"><i aria-hidden="true"></i> 可合作</span></div>
+      <div class="intro-card-content">
+        <p>极智矩阵（Ultimatrix）是我一个人运营的 AI 工作室。一套 Agent 底层，同时跑通 AI 短剧、AI 设计与量化投研三条赛道。</p>
+        <dl class="intro-meta">
+          <div><dt>模式</dt><dd>一人 OPC</dd></div>
+          <div><dt>业务</dt><dd>三条赛道</dd></div>
+          <div><dt>周期</dt><dd>4—12 周</dd></div>
+        </dl>
+        <a class="button primary-button" href="#projects">查看三条赛道 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- 03 / 信号 -->
+    <article class="hero-card signal-card">
+      <div class="card-label"><span>SIGNAL</span><span>03</span></div>
+      <div class="field-note-body">
+        <strong>3 / 3</strong>
+        <p>一套底层技术，三个高增长赛道。一份固定成本，三条现金流。</p>
+      </div>
+      <a class="text-action inverted" href="#studio">了解模式 <span class="arrow">→</span></a>
+    </article>
+
+    <!-- 04 / 简历 -->
+    <article class="hero-card resume-card">
+      <div class="card-label"><span>简历</span><span>04</span></div>
+      <div class="resume-word">CV.pdf</div>
+      <dl class="resume-meta">
+        <div><dt>内容</dt><dd>经历 / 项目 / 资质</dd></div>
+        <div><dt>版本</dt><dd>中英双语</dd></div>
+        <div><dt>更新</dt><dd>2026 · 09</dd></div>
+      </dl>
+      <button class="button quiet-button" type="button" data-toast="简历 PDF 已生成，部署上线后提供下载链接。">查看简历</button>
+    </article>
+
+    <!-- 05 / 技术栈 -->
+    <article class="hero-card skills-card">
+      <div class="card-label"><span>技术栈</span><span>4 组</span></div>
+      <div class="skill-list">
+        <div><span>01 / ML &amp; DL</span><strong>LLM / Agent / RAG · 训练与推理</strong></div>
+        <div><span>02 / 工程</span><strong>TypeScript / Python / SQL / 云原生</strong></div>
+        <div><span>03 / 数据</span><strong>Spark / Databricks / Snowflake / 向量库</strong></div>
+        <div><span>04 / 金融</span><strong>CFA L3 · 量化策略 / 回测 / 风控</strong></div>
+      </div>
+    </article>
+
+    <!-- 06 / 主推项目 (Featured) -->
+    <article class="hero-card hero-project-card">
+      <div class="card-label"><span>Featured / 03</span><span>量化 Agent</span></div>
+      <div class="hero-product-preview" aria-label="量化 Agent 系统 Dashboard 预览">
+        <QuantChart />
+        <div class="hero-preview-note">
+          <span>UMX · Quant</span>
+          <strong>7×24 Agent 实时爬取<br/>187 个公开交易策略</strong>
+          <small>回测通过率 23% · 头部夏普 2.4</small>
+        </div>
+      </div>
+      <div class="hero-project-bottom">
+        <div>
+          <span class="micro-copy">AGENT RESEARCH · 03</span>
+          <h2>{featured.title}</h2>
+        </div>
+        <a class="hero-case-link" href="#projects">查看项目</a>
+      </div>
+    </article>
+
+    <!-- 07 / 索引 -->
+    <article class="hero-card explore-card">
+      <div class="card-label"><span>业务索引</span><span>05</span></div>
+      {tracks.map((t, i) => (
+        <a href={`#project-${t.id}`} class="explore-link">
+          <span>{t.title}</span>
+          <small>{String(i + 1).padStart(2, '0')}</small>
+        </a>
+      ))}
+    </article>
+
+  </div>
+</section>
