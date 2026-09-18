@@ -27,9 +27,13 @@ export const site = {
   },
   contact: {
     email: 'guang.k.yang@gmail.com',
+    emailUrl: 'mailto:guang.k.yang@gmail.com',
     phone: '+86 180 3340 0322',
+    phoneTel: 'tel:+8618033400322',
     linkedin: 'linkedin.com/in/guang-kevin-yang-504a0519',
-    github: 'github.com/guangyangsjc18',
+    linkedinUrl: 'https://linkedin.com/in/guang-kevin-yang-504a0519',
+    github: 'github.com/guangyangai',
+    githubUrl: 'https://github.com/guangyangai',
   },
   /** SEO meta */
   meta: {

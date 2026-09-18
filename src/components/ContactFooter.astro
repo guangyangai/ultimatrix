@@ -1,5 +1,7 @@
 ---
-import { site, contact } from '../data/site';
+import { site } from '../data/site';
+
+const { contact } = site;
 ---
 
 <footer class="page-shell site-footer" id="contact">
@@ -9,9 +11,9 @@ import { site, contact } from '../data/site';
       <h2 id="contact-title">正在寻找 AI 工作流<br/>或量化研究合作？</h2>
       <p class="contact-context">不论是短剧量产、设计工具试用，还是 Agent 投研内测，可以从一个 30 分钟的需求对齐开始。</p>
     </div>
-    <button class="button contact-button" type="button" data-toast={`邮箱：${contact.email} · 微信/电话：${contact.phone}`}>
+    <a class="button contact-button" href={contact.emailUrl}>
       联系我 <span aria-hidden="true" class="arrow">→</span>
-    </button>
+    </a>
   </section>
 
   <div class="footer-grid" data-reveal="true">
@@ -24,10 +26,10 @@ import { site, contact } from '../data/site';
 
     <section class="footer-card">
       <p class="footer-title">联系与资料</p>
-      <button class="footer-action" type="button" data-toast={`邮箱：${contact.email}`}><span>邮箱</span><b>点击查看</b></button>
-      <button class="footer-action" type="button" data-toast={`电话 / 微信：${contact.phone}`}><span>电话 / 微信</span><b>+86 · 180</b></button>
-      <button class="footer-action" type="button" data-toast={`LinkedIn: ${contact.linkedin}`}><span>LinkedIn</span><b>点击查看</b></button>
-      <button class="footer-action" type="button" data-toast={`GitHub: ${contact.github}`}><span>GitHub</span><b>点击查看</b></button>
+      <a class="footer-action" href={contact.emailUrl}><span>邮箱</span><b>{contact.email}</b></a>
+      <a class="footer-action" href={contact.phoneTel}><span>电话 / 微信</span><b>{contact.phone}</b></a>
+      <a class="footer-action" href={contact.linkedinUrl} target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><b>点击查看</b></a>
+      <a class="footer-action" href={contact.githubUrl} target="_blank" rel="noopener noreferrer"><span>GitHub</span><b>点击查看</b></a>
     </section>
 
     <section class="footer-card footer-note">
