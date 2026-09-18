@@ -41,8 +41,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # 上传 dist/ 里的所有文件到服务器
-          source: "dist/*"
+          # ⚠️ 末尾的斜杠很关键：dist/ 表示"目录内容"，dist 表示"整个目录"
+          source: "dist/"
           # 目标路径（你的域名在 Spaceship 的 document root）
           target: "${{ secrets.SSH_TARGET }}"
           # 不清空目标目录（保留 .htaccess 等）
