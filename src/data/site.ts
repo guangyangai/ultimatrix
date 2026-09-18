@@ -95,6 +95,11 @@ export const tracks = [
 ] as const;
 
 /**
+ * 联系方式（独立导出，方便组件直接引用）
+ */
+export const contact = site.contact;
+
+/**
  * 工作室能力卡片（暗调部分）
  */
 export const capabilities = [
