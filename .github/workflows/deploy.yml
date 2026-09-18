@@ -1,0 +1,58 @@
+name: Deploy to Spaceship via SSH
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Verify dist/ contents
+        run: |
+          echo "=== Files in dist/ ==="
+          ls -la dist/
+          echo ""
+          echo "=== index.html size ==="
+          wc -c dist/index.html
+
+      - name: Deploy via SSH/SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # 上传 dist/ 里的所有文件到服务器
+          source: "dist/*"
+          # 目标路径（你的域名在 Spaceship 的 document root）
+          target: "${{ secrets.SSH_TARGET }}"
+          # 不清空目标目录（保留 .htaccess 等）
+          strip_components: 0
+          # 是否删除目标里多余的文件
+          # true = 完全替换（推荐：让站点始终是最新的 dist/ 内容）
+          remove: true
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "✅ Deploy complete"
+          echo "Site URL: https://ultimatrix.dev"
